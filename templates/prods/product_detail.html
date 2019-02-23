@@ -1,0 +1,32 @@
+{% extends 'prods/base.html'%}
+{% block product %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 py-3">
+            <div class="card">
+            <!-- <img src="product.photo.url" alt="ku-ku"> -->
+            <img class="card-img-top"
+                    src="{{product.get_photo_url}}"
+                    alt="Card image cap"
+                    style='width:14rem;'
+                    >
+              <div class="card-body">
+                <h5 class="card-title">{{product|title}}</h5>
+                <p class="card-text">{{product.description}}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price:${{product.price}}</li>
+                {% if product.sale %}
+                <li class="list-group-item">On Sale!</li>
+                {% endif %}
+              </ul>
+              <div class="card-body">
+                <a href="#" class="card-link">To Card</a>
+              </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock product %}

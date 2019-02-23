@@ -1,0 +1,32 @@
+{% extends 'prods/base.html'%}
+{% load staticfiles %}
+{% block title %}Home Page{% endblock title %}
+{% block product %}
+<div class="col-md-10 col-md-push-2">
+    <div class="container ">
+        <!-- div= row cards -->
+        <div class="row">
+            {% for prod in products %}
+                {% include 'extra/prod_card.html' with prod=prod %}
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="row"><!-- div pagination -->
+            <div class="col-md-12">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+        </div><!-- end div pagination -->
+    </div>
+
+
+
+    </div>
+
+{% endblock %}
