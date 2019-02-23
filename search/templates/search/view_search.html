@@ -1,6 +1,11 @@
 {% extends 'prods/base.html' %}
 {% load staticfiles %}
 {% block title %}Search Page{% endblock title %}
+
+{% block sidebar%}
+    {% include 'prods/sidebar.html'%}
+{% endblock sidebar %}
+
 {% block product %}
 <div class="col-md-10 col-md-push-2">
     <div class="container ">
@@ -11,9 +16,6 @@
                 <hr>
             </div>
             {% endif %}
-            <div class="col-12 ">
-                {% include 'search/extra/search_form.html'%}
-            </div>
         </div>
         <!-- div= row cards -->
         <div class="row">
