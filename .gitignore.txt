@@ -2,6 +2,7 @@ venv
 .pyc
 __pycache__
 media
+static
 local_settings.py
 settings.py
 prod_settings.py

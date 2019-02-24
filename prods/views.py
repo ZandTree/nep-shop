@@ -11,14 +11,7 @@ class ProdDetail(DetailView):
     model = Product
     context_object_name = 'product'
 
-    # def get_object(self,*args,**kwargs):
-    #     request = self.request
-    #     pk = self.kwargs.get('pk')
-    #     obj = Product.objects.get_prod_byId(pk)
-    #     if obj is None:
-    #         raise Http404("Oups,This product is not found")
-    #     return obj
-
+    
 
 
 class CartDetail(View):

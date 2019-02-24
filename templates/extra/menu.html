@@ -1,6 +1,7 @@
 <div class="container">
     <nav class="navbar navbar-expand-md navbar-light fixed-top"
     style="background:#e25e2f;" role="navigation" >
+    <!-- <div class="container"> -->
         <a class="navbar-brand" href="#">Shop Bar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,13 +30,13 @@
                     { endrecursetree %}#}  -->
                 <!-- </ul>    -->
             </ul>
-                
+
             <ul class="navbar-nav">
                 <li class="nav-item">
                        <a class="nav-link" href="">Link</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="{% url 'search:sale-search' %}">Sale</a>
                 </li>
                 <li class="nav-item">
                        <a class="nav-link" href="">Register</a>
@@ -59,5 +60,6 @@
                 </li>
                </ul>
            </div>
+
        </nav>
-   </div>
+       </div>

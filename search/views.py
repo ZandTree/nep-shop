@@ -12,5 +12,13 @@ class SearchList(ListView):
     def get_queryset(self,*args,**kwargs):
         word = self.request.GET.get('q')
         if word is not None:
-            return Product.objects.filter(Q(title__icontains=word)|Q(description__icontains=word))
+            return Product.objects.search(word)
         return Product.objects.none()
+
+class SaleList(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'search/view_search.html'
+
+    def get_queryset(self,*args,**kwargs):
+        return Product.objects.for_sale()

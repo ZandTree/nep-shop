@@ -20,8 +20,12 @@
         <!-- div= row cards -->
         <div class="row">
             {% for prod in products %}
+            <div class="col-md-4 py-3">
+                {{forloop.counter}}
                 {% include 'extra/prod_card.html' with prod=prod %}
+            </div>
             {% endfor %}
+
         </div>
         <hr>
         <div class="row"><!-- div pagination -->

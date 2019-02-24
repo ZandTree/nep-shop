@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 class Category(MPTTModel):
@@ -37,18 +38,17 @@ def upload_img_file(instance,filepath):
         name = name[:5]
     new_file_name = name + ext
     return os.path.join('image','prod_{0}','{1}').format(instance.id,new_file_name)
-#
-# class ProductManager(models.Manager):
-#     """
-#     convenience method (more kwargs in filter as needed)
-#     """
-#     # Products.objects... == self.get_quesryset...
-#     def get_prod_byId(self,pk):
-#         qs = Product.objects.filter(id=pk)
-#         if qs.count() == 1:
-#             return qs.first()
-#         return None
-# 
+
+class ProductManager(models.Manager):
+    def search(self,word):
+        lookup = (Q(title__icontains=word)|
+                    Q(description__icontains=word)|
+                    Q(price__icontains=word)
+                    )
+        return Product.objects.filter(lookup).distinct()
+    def for_sale(self):
+        return Product.objects.filter(sale=True)
+
 class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(max_length=120,blank=True,unique=True)
@@ -60,7 +60,7 @@ class Product(models.Model):
     photo = models.ImageField(upload_to=upload_img_file,blank=True,null=True)
     categ = models.ForeignKey(Category,on_delete=models.CASCADE,related_name='products')
 
-    #objects = ProductManager() # not overriding but extending .objects()
+    objects = ProductManager() # not overriding but extending .objects()
 
     def __str__(self):
         return self.title
