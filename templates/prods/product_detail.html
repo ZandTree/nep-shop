@@ -8,7 +8,6 @@
             <img class="card-img-top img-fluid"
                     src="{{product.get_photo_url}}"
                     alt="Card image cap">
-
                     <!-- style='width:14rem;' -->
 
               <div class="card-body">
@@ -20,8 +19,16 @@
                 {% if product.sale %}
                 <li class="list-group-item">On Sale!</li>
                 {% endif %}
+                <li class="list-group-item">
+                    Amount
+                    <form class="" action="{% url 'prods:add-to-cart' product.slug %}" method="post">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" name="" class="btn btn-success" value="Choose ">
+                    </form>
+                </li>
               </ul>
-              <div class="card-body">
+              <div class="card-body text-center">
                 <a href="#" class="card-link">To Card</a>
               </div>
         </div>

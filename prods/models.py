@@ -43,7 +43,9 @@ class ProductManager(models.Manager):
     def search(self,word):
         lookup = (Q(title__icontains=word)|
                     Q(description__icontains=word)|
-                    Q(price__icontains=word)
+                    Q(price__icontains=word)|
+                    Q(tags__title__icontains=word)
+                    # without related_name use just tag_title,tag_sluf (through the field)
                     )
         return Product.objects.filter(lookup).distinct()
     def for_sale(self):
@@ -86,33 +88,30 @@ class Cart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
     accepted = models.BooleanField(default=False)
-    total = models.DecimalField(decimal_places=2,max_digits=10000000,editable=False)
+    total = models.DecimalField(decimal_places=2,
+                        max_digits=10000000,
+                        default = 0.00,
+                        editable=False)
 
-    def save(self,*args,**kwargs):
-        total = 0
-        super().save(*args,**kwargs)
+    # def save(self,*args,**kwargs):
+    #     total = 0.00
+    #     super().save(*args,**kwargs)
 
     def __str__(self):
         if self.user:
             return "cart id:{} user:{}".format(self.id,self.user.id)
         return  "cart id:{} anonymnus".format(self.id)
 
-class Cartitem(models.Model):
+class CartItem(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_items')
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='prod_in_carts')
-    qty = models.PositiveIntegerField(default=0,editable=False)
+    qty = models.PositiveIntegerField(default=0)
     sub_total = models.DecimalField(decimal_places=2,max_digits=10000000)
 
     def save(self,*args,**kwargs):
         """ generate price for each cart_item"""
         sub_total = self.product.price *self.qty
         super().save(*args,**kwargs)
-
-
-
-
-
-
 
 
 @receiver(pre_save, sender=Product)
