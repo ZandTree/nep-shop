@@ -26,24 +26,12 @@ class ProdDetail(DetailView):
         context['form'] = form
         return context
 
-def create_cart(user=None):
-    cart_obj = Cart.objects.create(user=None)
-    print('new cart made')
-    return cart_obj
-
-
 class AddItemToCart(View):
     def post(self,request,slug):
-        # del request.session['cart_id']
-        cart_id = request.session.get('cart_id',None)
-        qs_cart = Cart.objects.filter(id=cart_id)
-        if qs_cart.count() == 1:
-            print('cart already exists')
-            cart_obj = qs_cart.first()
-        else:
-            cart_obj = create_cart()
-            request.session['cart_id']=cart_obj.id
+        #del request.session['cart_id']
+        cart,new_obj = Cart.objects.new_or_get(request)
         return redirect("/detail/{}/".format(slug))
+
 
 class CartView(View):
     def get(self,request):

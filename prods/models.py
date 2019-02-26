@@ -83,6 +83,39 @@ class Product(models.Model):
             img.thumbnail(output_size)
             img.save(self.photo.path)
 
+class CartManager(models.Manager):
+    def new_or_get(self,request):
+        cart_id = request.session.get('cart_id',None)
+        qs = self.get_queryset().filter(id=cart_id)
+        if qs.count() == 1:
+            new_obj = False
+            print('cart already existed')
+            cart_obj = qs.first()
+            print('It is this cart',cart_obj.user)
+            if request.user.is_authenticated and cart_obj.user is None:
+                # перекидываю юзера в бывшую аномним корзину,созданную им в незалогинен состоянии
+                # should I delete previous cart?
+                # what should I do with prods in it?
+                cart_obj.user = request.user
+                cart_obj.save()
+                print('user cart none converted to the owner',request.user)
+                print('attr user was updated from None to user ',cart_obj.id)
+        else:
+            cart_obj = Cart.objects.new(user=request.user,accepted=False)
+            new_obj = True
+            print('new cart obj created')
+            request.session['cart_id'] = cart_obj.id
+            print("session cart-id istablished",cart_obj.id)
+        return cart_obj,new_obj
+
+    def new(self,user=None,accepted=False):
+        print('manager new calling: user is ',user)
+        user_obj = None
+        if user is not None:
+            if user.is_authenticated:
+                user_obj = user
+        return self.model.objects.create(user=user_obj,accepted=False)
+
 class Cart(models.Model):
     user = models.ForeignKey(User,blank=True,null=True,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -92,10 +125,11 @@ class Cart(models.Model):
                         max_digits=10000000,
                         default = 0.00,
                         editable=False)
+    objects = CartManager()
 
-    # def save(self,*args,**kwargs):
-    #     total = 0.00
-    #     super().save(*args,**kwargs)
+    def save(self,*args,**kwargs):
+        total = 0.00
+        super().save(*args,**kwargs)
 
     def __str__(self):
         if self.user:
@@ -110,7 +144,8 @@ class CartItem(models.Model):
 
     def save(self,*args,**kwargs):
         """ generate price for each cart_item"""
-        sub_total = self.product.price *self.qty
+        #self.sub_total = 0.00
+        self.sub_total = self.product.price *self.qty
         super().save(*args,**kwargs)
 
 
