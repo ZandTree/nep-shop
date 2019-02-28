@@ -1,7 +1,16 @@
 {% extends 'prods/base.html'%}
 {% block product %}
 <div class="container">
-    <p>session cart_id: {{cart_id}}</p>
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="row">
         <div class="col-md-6 py-3">
             <div class="card">
@@ -22,7 +31,7 @@
                 {% endif %}
                 <li class="list-group-item">
                     Amount
-                    <form class="" action="{% url 'prods:add-to-cart' product.slug %}" method="post">
+                    <form class="" action="{% url 'prods:add-to-cart' product.slug product.id %}" method="post">
                         {% csrf_token %}
                         {{form.as_p}}
                         <input type="submit" name="" class="btn btn-success" value="Choose ">
@@ -30,7 +39,7 @@
                 </li>
               </ul>
               <div class="card-body text-center">
-                <a href="#" class="card-link">To Card</a>
+                <a href="{% url 'prods:cart' %}" class="card-link">To Card</a>
               </div>
         </div>
     </div>

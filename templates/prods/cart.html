@@ -1,7 +1,49 @@
 {% extends 'prods/base.html'%}
 {% block title%}your cart{% endblock%}
 {% block content %}
-<h2>details about your cart</h2>
-<p></p>
-<p></p>
+<div class="container">
+    <h2>details about your cart</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col"># Cart Id</th>
+          <th scope="col"># Item Id</th>
+          <th scope="col">Product</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Price per 1 st</th>
+          <th scope="col">Sub-Total</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for item in items %}
+        <tr>
+          <th scope="row"># {{cart.id}}</th>
+          <th scope="row">{{item.id}}</th>
+          <td> <a href="{{prod.get_absolute_url}}">{{item.product}}</a></td>
+          <td>
+              <div class="form-group">
+                  <form class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" id="quantity" name="qty"
+                                class="form-control input-number text-center"
+                                value="{{item.qty}}"
+                                min="1"
+                                max="100">
+                        <button type="submit" class="btn btn-success">Edit</button>
+                   </form>
+              </div>
+
+            </td>
+          <td>${{item.product.price}}</td>
+          <td>${{item.sub_total}}</td>
+          <td><a href="{% url 'prods:delete-cart-item' item.id %}" class="btn btn-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+</div>
+
 {% endblock %}
