@@ -137,6 +137,7 @@ class Cart(models.Model):
                         max_digits=10000000,
                         default = 0.00,
                         editable=False)
+    active = models.BooleanField(default=True)                    
     objects = CartManager()
 
     def save(self,*args,**kwargs):
