@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404,reverse
+from django.http import JsonResponse
 from django.views.generic import (ListView,
                                 DetailView,
                                 CreateView,
@@ -7,6 +8,7 @@ from django.views.generic import (ListView,
 from .models import Product,Cart,CartItem,Category
 from .forms import *
 from django.contrib import messages
+from django.db.models import Sum
 # class KillSession(View):
 #     def get(self,request):
 #         del request.session['cart_id']
@@ -48,7 +50,6 @@ class AddItemToCart(View):
                 item.qty += int(qty)
                 item.save()
                 messages.success(request, 'Qty changed.')
-
             except CartItem.DoesNotExist:
                 item  = CartItem.objects.create(
                     cart = cart,
@@ -58,9 +59,9 @@ class AddItemToCart(View):
                 messages.success(request, 'New item added to your cart.')
         else:
             messages.error(request, 'Amount of product should be 1 or more.')
-
-        return redirect("/detail/{}/".format(slug))
-
+        qty = cart.cart_items.aggregate(total=Sum('qty'))
+        total = qty.get('total',0)
+        return JsonResponse({'qty':total})
 
 class CartItemsView(ListView):
     context_object_name = 'items'
@@ -75,7 +76,8 @@ class CartItemsView(ListView):
         cart = Cart.objects.new_or_get(self.request)
         context['cart'] = cart
         one_item = cart.cart_items.all().last()
-        context['prod'] = Product.objects.get(id=one_item.product_id)
+        if one_item:
+            context['prod'] = Product.objects.get(id=one_item.product_id)
         return context
 
 class DeleteCartItem(View):
@@ -84,7 +86,6 @@ class DeleteCartItem(View):
         cart_item.delete()
         messages.warning(request,'product deleted from your cart')
         return redirect('prods:cart')
-
 
 class EditCartItem(View):
     """Edit item in cart"""

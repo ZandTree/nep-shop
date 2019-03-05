@@ -7,4 +7,9 @@ def count_items_cart(request):
     """
     cart = Cart.objects.get(user = request.user)
     qty = cart.cart_items.aggregate(total=Sum('qty'))
-    return {"qty":qty}
+    total = qty.get('total')
+    if total:
+        return {'qty':total}
+    else:
+        total = 0
+        return {"qty":total}

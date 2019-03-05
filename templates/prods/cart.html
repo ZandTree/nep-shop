@@ -2,7 +2,10 @@
 {% block title%}your cart{% endblock%}
 {% block content %}
 <div class="container">
-    <h2>details about your cart</h2>
+    <h2 class="my-3">Details about your cart</h2>
+    {% if not items %}
+    <h4>No items In Your Cart Yet</h4>
+    {% else %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -16,6 +19,7 @@
         </tr>
       </thead>
       <tbody>
+
           {% for item in items %}
         <tr>
           <th scope="row"># {{cart.id}}</th>
@@ -40,10 +44,9 @@
           <td><a href="{% url 'prods:delete-cart-item' item.id %}" class="btn btn-danger">Delete</a></td>
         </tr>
         {% endfor %}
-      </tbody>
-    </table>
-
-
+        </tbody>
+        </table>
+        {% endif %}
 </div>
 
 {% endblock %}

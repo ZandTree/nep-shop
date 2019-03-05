@@ -31,7 +31,7 @@
                 {% endif %}
 
                 <li class="list-group-item">
-                    <form class="" action="{% url 'prods:add-to-cart' product.slug product.id %}" method="post">
+                    <form id="qty_form" action="{% url 'prods:add-to-cart' product.slug product.id %}" method="post">
                         {% csrf_token %}
                     <div class="input-group">
                         <div class="row">
@@ -69,6 +69,7 @@
                          <!--end row inside form-->
                         </div>
                     </form>
+                    <p id='note'></p>
               </li>
               <li class="list-group-item">
                     <div class="row">

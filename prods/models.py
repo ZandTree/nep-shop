@@ -128,6 +128,8 @@ class CartManager(models.Manager):
                 user_obj = user
         return self.model.objects.create(user=user_obj,accepted=False)
 
+    
+
 class Cart(models.Model):
     user = models.ForeignKey(User,blank=True,null=True,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -137,7 +139,7 @@ class Cart(models.Model):
                         max_digits=10000000,
                         default = 0.00,
                         editable=False)
-    active = models.BooleanField(default=True)                    
+    active = models.BooleanField(default=True)
     objects = CartManager()
 
     def save(self,*args,**kwargs):
