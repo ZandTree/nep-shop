@@ -90,6 +90,8 @@ class DeleteCartItem(View):
 class EditCartItem(View):
     """Edit item in cart"""
     def post(self, request, pk):
+        if request.is_ajax:
+            print('it is ajax')
         quantity = request.POST.get("qty", None)
         if quantity:
             item = CartItem.objects.get(id=pk, cart__user=request.user)

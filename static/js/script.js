@@ -11,8 +11,7 @@ var csrftoken = Cookies.get('csrftoken');
         headers: {"X-CSRFToken": csrftoken}
     });
 
-
-$('#minus').on('click',function(e){
+$('#minus').on('click',function(){
         //e.preventDefault();
         var qty = parseInt($("#qty").val());
         if (qty > 0) {
@@ -21,7 +20,7 @@ $('#minus').on('click',function(e){
     qty = $("#qty").val()
 
 });
-$('#plus').on('click',function(e){
+$('#plus').on('click',function(){
         //e.preventDefault();
         var qty = parseInt($("#qty").val());
         var new_val = $("#qty").val(qty + 1);

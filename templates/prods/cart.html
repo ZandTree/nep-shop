@@ -2,6 +2,7 @@
 {% block title%}your cart{% endblock%}
 {% block content %}
 <div class="container">
+    <h3 id='test'>May be changed</h3>
     <h2 class="my-3">Details about your cart</h2>
     {% if not items %}
     <h4>No items In Your Cart Yet</h4>
@@ -19,7 +20,6 @@
         </tr>
       </thead>
       <tbody>
-
           {% for item in items %}
         <tr>
           <th scope="row"># {{cart.id}}</th>
@@ -27,7 +27,7 @@
           <td> <a href="{{prod.get_absolute_url}}">{{item.product}}</a></td>
           <td>
               <div class="form-group">
-                  <form class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
+                  <form id="form-cart-change-items" class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
                         {% csrf_token %}
                         <input type="number" id="quantity" name="qty"
                                 class="form-control input-number text-center"
@@ -37,7 +37,6 @@
                         <button type="submit" class="btn btn-success">Edit</button>
                    </form>
               </div>
-
             </td>
           <td>${{item.product.price}}</td>
           <td>${{item.sub_total}}</td>
@@ -48,5 +47,25 @@
         </table>
         {% endif %}
 </div>
-
 {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $("#form-cart-change-items").on('submit',function(e){
+        e.preventDefault(e);
+        $.ajax( {
+                url:$(this).attr('action'),
+                data:$(this).serialize(),
+                type:$(this).attr("method"),
+                success:function(response){
+                   console.log('success');
+                   console.log(response);
+                   //window.location = response;
+                },
+               error: function(err){
+                   console.log('error',err);
+               }
+       }) //end ajax
+    }); //end $form-cart-change-items
+</script>
+{% endblock js%}
