@@ -16,6 +16,19 @@
         <!-- <div class="colorlib-shop"> -->
             <!-- отталкивает от фото = пригодится -->
                 <div class="container-fluid">
+                    <div class="container my-2">
+                        {% if messages %}
+                            {% for msg in messages %}
+                                <div class="alert alert-info" role="alert">
+                                    <button class="close" data-dismiss="alert">
+                                    <small><sup>X</sup></small>
+                                    </button>
+                                    <p>{{msg}}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
                     {% block content %}
                     {% endblock %}
                 </div>

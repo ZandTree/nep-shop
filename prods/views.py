@@ -53,7 +53,7 @@ class AddItemToCart(View):
             messages.success(request, 'New item added to your cart.')
         if request.is_ajax():
             return JsonResponse({"flag":flag})
-        return redirect("/detail/{}/".format(slug))
+        # return redirect("/detail/{}/".format(slug))
 
 class CartItemsView(ListView):
     context_object_name = 'items'
@@ -67,58 +67,43 @@ class CartItemsView(ListView):
         context = super().get_context_data(*args,**kwargs)
         cart = Cart.objects.new_or_get(self.request)
         context['cart'] = cart
+        # что-то непонятное
         one_item = cart.cart_items.all().last()
-        if one_item:
-            context['prod'] = Product.objects.get(id=one_item.product_id)
+        # if one_item:
+        #     context['prod'] = Product.objects.get(id=one_item.product_id)
         return context
 
 
-# class EditCartItem(View):
-#     """Edit item in cart"""
-#     def post(self, request, pk):
-#         quantity = request.POST.get("qty", None)
-#         if quantity:
-#             item = CartItem.objects.get(id=pk, cart__user=request.user)
-#             item.qty = int(quantity)
-#             item.save()
-#         if request.is_ajax:
-#             print('it is ajax=====================')
-#             # return JsonResponse({'qty':total})
-#         return redirect("/cart/")
-# class EditCart(View):
-#     def post(self,request,slug,pk):
-#         #del request.session['cart_id']
-#         cart = Cart.objects.new_or_get(request)
-#         prod = get_object_or_404(Product,id=pk)
-#         qty = request.POST.get('qty')
-#         if qty is not None and int(qty)>0:
-#             try:
-#                 item = CartItem.objects.get(
-#                     cart = cart,
-#                     product = prod,
-#                     cart__accepted=False
-#                 )
-#                 item.qty += int(qty)
-#                 item.save()
-#                 messages.success(request, 'Qty changed.')
-#             except CartItem.DoesNotExist:
-#                 item  = CartItem.objects.create(
-#                     cart = cart,
-#                     product = prod,
-#                     qty = int(qty)
-#                     )
-#                 messages.success(request, 'New item added to your cart.')
-#         else:
-#             messages.error(request, 'Amount of product should be 1 or more.')
-#         qty = cart.cart_items.aggregate(total=Sum('qty'))
-#         total = qty.get('total',0)
-#         return JsonResponse({'qty':total})
-#
-#
-# class DeleteCartItem(View):
-#     def get(self,request,pk):
-#         cart_item = get_object_or_404(CartItem,id=pk,cart__user=request.user)
-#         cart_item.delete()
-#         messages.warning(request,'product deleted from your cart')
-#         return redirect('prods:cart')
-#
+class EditCart(View):
+    def post(self,request,pk):
+        #del request.session['cart_id']
+        cart = Cart.objects.new_or_get(request)
+        cart_item = get_object_or_404(CartItem,id=pk)
+        #print(cart_item.product_id)
+        prod= Product.objects.get(id=cart_item.product_id)
+        qty = request.POST.get('qty')
+        if qty is not None and int(qty)>0:
+            item = CartItem.objects.get(
+                cart = cart,
+                product = prod,
+                cart__accepted=False
+            )
+            item.qty = int(qty)
+            item.save()
+            messages.success(request, 'Qty changed.')
+
+        else:
+            messages.error(request, 'Amount of product should be 1 or more.')
+        # qty = cart.cart_items.aggregate(total=Sum('qty'))
+        # total = qty.get('total',0)
+        # return JsonResponse({'qty':total})
+
+        return redirect('prods:cart')
+
+
+class DeleteCartItem(View):
+    def get(self,request,pk):
+        cart_item = get_object_or_404(CartItem,id=pk,cart__user=request.user)
+        cart_item.delete()
+        messages.warning(request,'product deleted from your cart')
+        return redirect('prods:cart')
