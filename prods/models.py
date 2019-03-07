@@ -91,7 +91,7 @@ class CartManager(models.Manager):
         qs = self.get_queryset().filter(id=cart_id)
         if qs.count() == 1:
             new_obj = False
-            print('cart already existed')
+            # print('cart already existed')
             cart_obj = qs.first()
             print('It is this cart',cart_obj.user)
             if request.user.is_authenticated and cart_obj.user is None:
@@ -108,7 +108,7 @@ class CartManager(models.Manager):
                     print('cart_items added from the prev cart')
                 cart_obj.accepted = False
                 prev_cart.delete()
-                print('prev cart delted')
+                print('prev cart deleted')
                 cart_obj.save()
                 print('user cart user=NULL converted to req.user',request.user)
 
@@ -121,14 +121,14 @@ class CartManager(models.Manager):
         return cart_obj
 
     def new(self,user=None,accepted=False):
-        print('manager new calling: user is ',user)
+        print('manager "new" calling: user is ',user)
         user_obj = None
         if user is not None:
             if user.is_authenticated:
                 user_obj = user
         return self.model.objects.create(user=user_obj,accepted=False)
 
-    
+
 
 class Cart(models.Model):
     user = models.ForeignKey(User,blank=True,null=True,on_delete=models.CASCADE)

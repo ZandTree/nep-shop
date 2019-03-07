@@ -27,15 +27,16 @@ $('#plus').on('click',function(){
     qty = $("#qty").val()
 
 });
-$('#qty_form').on('submit',function(e){
-        e.preventDefault();
-        //e.preventDefault();// stops browser from sending form and reload
-        var url = $(this).attr('action');
-        console.log(url);
-        //var data = $("#qty").val(); //а представь,у тебя их вагон?
-        var data = $(this).serialize();
-        $.post(url,data,function(resp){
-            $("#note").html('Thanks');
-            $("#cart_total").html(resp.qty);
-        });
-});
+
+// $('#qty_form').on('submit',function(e){
+//         e.preventDefault();
+//         //e.preventDefault();// stops browser from sending form and reload
+//         var url = $(this).attr('action');
+//         console.log(url);
+//         //var data = $("#qty").val(); //а представь,у тебя их вагон?
+//         var data = $(this).serialize();
+//         $.post(url,data,function(resp){
+//             $("#note").html('Thanks');
+//             $("#cart_total").html(resp.qty);
+//         });
+// });

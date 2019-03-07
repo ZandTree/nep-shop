@@ -68,7 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 # my own function = in dir shop dir context_processors func list_categories
-                'prods.context_processors.count_items_cart',
+                #'prods.context_processors.count_items_cart',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
