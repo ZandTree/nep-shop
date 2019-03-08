@@ -74,7 +74,9 @@
             if(flag){
                 $("#msg").html('This product is already in your cart');
             }else{
-                $("#msg").html('new product added to your cart');}
+                $("#cart_total").text(response.numItems);
+                $("#msg").html('new product added to your cart');
+            }
         })
     });
 

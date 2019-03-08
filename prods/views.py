@@ -52,8 +52,10 @@ class AddItemToCart(View):
                 )
             messages.success(request, 'New item added to your cart.')
         if request.is_ajax():
-            return JsonResponse({"flag":flag})
-        # return redirect("/detail/{}/".format(slug))
+            total_qty = cart.cart_items.aggregate(total=Sum('qty'))
+            num_items = total_qty.get('total')
+            return JsonResponse({"flag":flag,"numItems":num_items})
+        return redirect("/detail/{}/".format(slug))
 
 class CartItemsView(ListView):
     context_object_name = 'items'
@@ -68,7 +70,7 @@ class CartItemsView(ListView):
         cart = Cart.objects.new_or_get(self.request)
         context['cart'] = cart
         total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
-        price = total_price.get('total_price')        
+        price = total_price.get('total_price')
         context['price'] = price
         # что-то непонятное
         one_item = cart.cart_items.all().last()
@@ -106,7 +108,7 @@ class EditCart(View):
 
 class DeleteCartItem(View):
     def get(self,request,pk):
-        cart_item = get_object_or_404(CartItem,id=pk,cart__user=request.user)
+        cart_item = get_object_or_404(CartItem,id=pk)
         cart_item.delete()
         messages.warning(request,'product deleted from your cart')
         return redirect('prods:cart')

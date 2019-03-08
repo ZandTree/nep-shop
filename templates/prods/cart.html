@@ -1,11 +1,12 @@
 {% extends 'prods/base.html'%}
+{% load static%}
 {% block title%}your cart{% endblock%}
 {% block content %}
 <div class="container-fluid">
     <h3 id='test'>May be changed</h3>
     <h2 class="my-3">Details about your cart</h2>
     <div class="row">
-        <div class="col col-md-10">
+        <div class="col col-md-10 mx-auto">
             {% if not items %}
             <h4>No items In Your Cart Yet</h4>
             {% else %}
@@ -15,7 +16,7 @@
                   <th scope="col"># Cart Id</th>
                   <th scope="col"># Item Id</th>
                   <th scope="col">Product</th>
-                  <th scope="col">Qty</th>
+                  <th scope="col">Quantaty</th>
                   <th scope="col">Price per 1 st</th>
                   <th scope="col">Delete</th>
                   <th scope="col">Sub-Total</th>
@@ -44,7 +45,7 @@
                       </div>
                     </td>
                   <td>${{item.product.price}}</td>
-                  <td><a href="{% url 'prods:delete-cart-item' item.id %}" class="btn btn-danger">Delete</a></td>
+                  <td><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/basket.svg' %}" alt="basket"></a></td>
                   <td>${{item.sub_total}}</td>
                   <td></td>
                   <td></td>
