@@ -12,4 +12,5 @@ urlpatterns = [
     path('add-to-cart/<slug:slug>/<int:pk>/',views.AddItemToCart.as_view(),name = 'add-to-cart'),
 
 
+
 ]

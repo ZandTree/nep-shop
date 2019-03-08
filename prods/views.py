@@ -67,6 +67,9 @@ class CartItemsView(ListView):
         context = super().get_context_data(*args,**kwargs)
         cart = Cart.objects.new_or_get(self.request)
         context['cart'] = cart
+        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
+        price = total_price.get('total_price')        
+        context['price'] = price
         # что-то непонятное
         one_item = cart.cart_items.all().last()
         # if one_item:

@@ -142,10 +142,6 @@ class Cart(models.Model):
     active = models.BooleanField(default=True)
     objects = CartManager()
 
-    def save(self,*args,**kwargs):
-        total = 0.00
-        super().save(*args,**kwargs)
-
     def __str__(self):
         if self.user:
             return "cart id:{} user:{}".format(self.id,self.user.id)

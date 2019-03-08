@@ -1,52 +1,71 @@
 {% extends 'prods/base.html'%}
 {% block title%}your cart{% endblock%}
 {% block content %}
-<div class="container">
+<div class="container-fluid">
     <h3 id='test'>May be changed</h3>
     <h2 class="my-3">Details about your cart</h2>
-    {% if not items %}
-    <h4>No items In Your Cart Yet</h4>
-    {% else %}
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col"># Cart Id</th>
-          <th scope="col"># Item Id</th>
-          <th scope="col">Product</th>
-          <th scope="col">Qty</th>
-          <th scope="col">Price per 1 st</th>
-          <th scope="col">Sub-Total</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-          {% for item in items %}
-        <tr>
-          <th scope="row"># {{cart.id}}</th>
-          <th scope="row">{{item.id}}</th>
-          <!-- {{prod.get_absolute_url -->
-          <td> <a href="#">{{item.product}}</a></td>
-          <td>
-              <div class="form-group">
-                  <form id="form-cart-change-items" class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="number" id="quantity" name="qty"
-                                class="form-control input-number text-center"
-                                value="{{item.qty}}"
-                                min="1"
-                                max="100">
-                        <button type="submit" class="btn btn-success">Edit</button>
-                   </form>
-              </div>
-            </td>
-          <td>${{item.product.price}}</td>
-          <td>${{item.sub_total}}</td>
-          <td><a href="{% url 'prods:delete-cart-item' item.id %}" class="btn btn-danger">Delete</a></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-        {% endif %}
+    <div class="row">
+        <div class="col col-md-10">
+            {% if not items %}
+            <h4>No items In Your Cart Yet</h4>
+            {% else %}
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col"># Cart Id</th>
+                  <th scope="col"># Item Id</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Price per 1 st</th>
+                  <th scope="col">Delete</th>
+                  <th scope="col">Sub-Total</th>
+                  <th scope="col">Items In Total</th>
+                  <th scope="col">Total Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for item in items %}
+                <tr>
+                  <th scope="row"># {{cart.id}}</th>
+                  <th scope="row">{{item.id}}</th>
+                  <!-- {{prod.get_absolute_url -->
+                  <td> <a href="#">{{item.product}}</a></td>
+                  <td>
+                      <div class="form-group">
+                          <form id="form-cart-change-items" class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" id="quantity" name="qty"
+                                        class="form-control input-number text-center"
+                                        value="{{item.qty}}"
+                                        min="1"
+                                        max="100">
+                                <button type="submit" class="btn btn-success">Edit</button>
+                           </form>
+                      </div>
+                    </td>
+                  <td>${{item.product.price}}</td>
+                  <td><a href="{% url 'prods:delete-cart-item' item.id %}" class="btn btn-danger">Delete</a></td>
+                  <td>${{item.sub_total}}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Items: {{qty}}</td>
+                    <td>Price ${{price}}</td>
+                </tr>
+                </tbody>
+                </table>
+                {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
 
