@@ -99,10 +99,6 @@ class EditCart(View):
 
         else:
             messages.error(request, 'Amount of product should be 1 or more.')
-        # qty = cart.cart_items.aggregate(total=Sum('qty'))
-        # total = qty.get('total',0)
-        # return JsonResponse({'qty':total})
-
         return redirect('prods:cart')
 
 

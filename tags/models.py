@@ -1,5 +1,5 @@
 from django.db import models
-from prods.utils import make_unique_slug
+from bookstore.utils import make_unique_slug
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.urls import reverse
@@ -21,5 +21,5 @@ class Tag(models.Model):
 @receiver(pre_save, sender=Tag)
 def tag_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.slug:
-        instance.slug = make_unique_slug(instance)
+        instance.slug = make_unique_id(instance)
 pre_save.connect(tag_presave_receiver,sender=Tag)

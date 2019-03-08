@@ -3,10 +3,10 @@
 {% block title%}your cart{% endblock%}
 {% block content %}
 <div class="container-fluid">
-    <h3 id='test'>May be changed</h3>
-    <h2 class="my-3">Details about your cart</h2>
+
     <div class="row">
         <div class="col col-md-10 mx-auto">
+            <h2 class="my-3 text-center">Details about your cart</h2>
             {% if not items %}
             <h4>No items In Your Cart Yet</h4>
             {% else %}
@@ -45,7 +45,7 @@
                       </div>
                     </td>
                   <td>${{item.product.price}}</td>
-                  <td><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/basket.svg' %}" alt="basket"></a></td>
+                  <td><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket"></a></td>
                   <td>${{item.sub_total}}</td>
                   <td></td>
                   <td></td>
@@ -61,6 +61,27 @@
                     <td></td>
                     <td>Items: {{qty}}</td>
                     <td>Price ${{price}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="{% url 'ords:create-order'%}"  method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="pk"
+                                     value="{{cart.id}}"                                         hidden >
+
+                            <input type="submit" value="Proceed To Checkout"
+                                class="btn btn-success">
+
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
                 </table>

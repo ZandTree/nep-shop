@@ -3,7 +3,7 @@ import os
 from django.http import Http404
 from PIL import Image
 from mptt.models import MPTTModel,TreeForeignKey
-from .utils import make_unique_slug
+from bookstore.utils import make_unique_slug
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.urls import reverse
