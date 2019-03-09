@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 
 ORDER_STATUS_CHOICES = (
-    #('db','to display')
+    #('in db','to display')
     ('created','Created'),
     ('paid','Paid'),
     ('shipped','Shipped'),
@@ -25,10 +25,8 @@ class Order(models.Model):
     def __str__(self):
         return "This is an order {}".format(self.order_id)
 
-
-
-
 def order_id_presave_receiver(sender, instance,*args,**kwargs):
-    if not instance.order_id:
+    if not instance.order_id: # if already created => no need to change
         instance.order_id = make_unique_id(instance)
+        # don't call here save(!)
 pre_save.connect(order_id_presave_receiver,sender=Order)

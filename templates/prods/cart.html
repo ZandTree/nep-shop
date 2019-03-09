@@ -16,11 +16,11 @@
                   <th scope="col"># Cart Id</th>
                   <th scope="col"># Item Id</th>
                   <th scope="col">Product</th>
-                  <th scope="col">Quantaty</th>
+                  <th scope="col">Edit Quantaty</th>
                   <th scope="col">Price per 1 st</th>
+                  <th scope="col">Quantity</th>
                   <th scope="col">Delete</th>
                   <th scope="col">Sub-Total</th>
-                  <th scope="col">Items In Total</th>
                   <th scope="col">Total Price</th>
                 </tr>
               </thead>
@@ -45,9 +45,10 @@
                       </div>
                     </td>
                   <td>${{item.product.price}}</td>
+                  <td>{{item.qty}} pieces</td>
                   <td><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket"></a></td>
                   <td>${{item.sub_total}}</td>
-                  <td></td>
+
                   <td></td>
                 </tr>
                 {% endfor %}
@@ -57,10 +58,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td>Items In Total: {{qty}}</td>
                     <td></td>
                     <td></td>
-                    <td>Items: {{qty}}</td>
-                    <td>Price ${{price}}</td>
+                    <td>Total Price (shipping excl) ${{price}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -72,7 +73,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <form action="{% url 'ords:create-order'%}"  method="POST">
+                        <form action="{% url 'orders:create-order' %}"  method="POST">
                             {% csrf_token %}
                             <input type="number" name="pk"
                                      value="{{cart.id}}"                                         hidden >

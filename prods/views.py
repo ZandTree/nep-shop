@@ -9,6 +9,7 @@ from .models import Product,Cart,CartItem,Category
 from .forms import *
 from django.contrib import messages
 from django.db.models import Sum
+
 # class KillSession(View):
 #     def get(self,request):
 #         del request.session['cart_id']

@@ -7,6 +7,11 @@
 {% block product%}
 <div class="container">
     <h1>Welcome by CheckingOut</h1>
+    <p>{{cart}}</p>
+    <p>cart id {{cart.id}}</p>
+    {% if cart %}
+    <p>cart.accepted, sum is: {{summa}}</p>
+    {% endif %}
 
 </div>
 
