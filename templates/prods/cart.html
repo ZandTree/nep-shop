@@ -26,7 +26,7 @@
               </thead>
               <tbody>
                   {% for item in items %}
-                <tr>
+                <tr class="on-move-{{item.product.id}}">
                   <th scope="row" class="text-center"># {{cart.id}}</th>
                   <th scope="row" class="text-center">{{item.id}}</th>
                   <!-- {{prod.get_absolute_url -->
@@ -48,41 +48,32 @@
                     </td>
                   <td class="text-center">${{item.product.price}}</td>
                   <!-- <td class="text-center">item.qty}} pieces</td> -->
-                  <td class="text-center"><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket"></a></td>
-                  <td class="text-center" id="itemSubTotal">${{item.sub_total}}</td>
+                  <td class="text-center ">
+                      <a class="remove-item"
+                      data-id={{item.product.id}}
+                      href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket">
+                      </a>
+                  </td>
 
+                  <td class="text-center" id="itemSubTotal">${{item.sub_total}}</td>
                   <td></td>
                 </tr>
                 {% endfor %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
                     <td class="text-center" id="totalItemsInCart">Items In Total: {{qty}}</td>
-                    <td></td>
-                    <td></td>
+                    <td></td><td></td>
                     <td class="text-center" id="totalPriceCart">Total Price (shipping excl) {{cart.total}}$</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     <td class="text-center">
                         <form action="{% url 'orders:create-order' %}"  method="POST">
                             {% csrf_token %}
                             <input type="number" name="pk"
                                      value="{{cart.id}}"                                         hidden >
-
                             <input type="submit" value="Proceed To Checkout"
                                 class="btn btn-success">
-
                         </form>
                     </td>
                 </tr>
@@ -95,7 +86,6 @@
 {% endblock %}
 
 {% block js %}
-
 <script type="text/javascript">
     $(".form-cart-change-items").on('submit',function(e){
         e.preventDefault(e);
@@ -108,12 +98,14 @@
                 data:$(this).serialize(),
                 type:$(this).attr("method"),
                 success:function(response){
-                    console.log('success coming!'),
-                    console.log(response),
+                    console.log('ajax firing')
                     totalPriceCart.html(response.cartTotalPrice),
                     totalItemsInCart.html(response.totalItemsInCart),
                     subTotal.html(response.subTotal)
-                }
+                },
+                error: function(err){
+                  console.log('error',err)
+              }                
 
        }) //end ajax
     }); //end $form-cart-change-items
@@ -121,5 +113,26 @@
 <!-- error: function(err){
   console.log('error',err);
 } -->
+<script type="text/javascript">
+    $(".remove-item").on('click',function(e){
+        e.preventDefault();
+        url = $(this).attr('href');
+        //should be item.priduct.id ( item self is alredy deleted)
+        var removeId=$(this).attr('data-id');
+        console.log(removeId);
+        $.ajax({
+            url:url,
+            type:"GET",
+            success:function(response){
+                console.log('greet from delete');
+                $(".on-move-"+ removeId).css('display','none');
+
+            },
+            error: function(err){
+              console.log('error',err)
+          }
+        })
+    })
+</script>
 
 {% endblock js%}

@@ -114,4 +114,5 @@ class DeleteCartItem(View):
         cart_item = get_object_or_404(CartItem,id=pk)
         cart_item.delete()
         messages.warning(request,'product deleted from your cart')
-        return redirect('prods:cart')
+        return JsonResponse({"ok":"ok"})
+        #return redirect('prods:cart')
