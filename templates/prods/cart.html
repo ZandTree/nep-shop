@@ -13,41 +13,43 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th scope="col"># Cart Id</th>
-                  <th scope="col"># Item Id</th>
-                  <th scope="col">Product</th>
-                  <th scope="col">Edit Quantaty</th>
-                  <th scope="col">Price per 1 st</th>
-                  <th scope="col">Quantity</th>
-                  <th scope="col">Delete</th>
-                  <th scope="col">Sub-Total</th>
-                  <th scope="col">Total Price</th>
+                  <th scope="col" class="text-center"># Cart Id</th>
+                  <th scope="col" class="text-center"># Item Id</th>
+                  <th scope="col" class="text-center">Product</th>
+                  <th scope="col" class="text-center">Edit Quantaty</th>
+                  <th scope="col" class="text-center">Price per 1 st</th>
+                  <!-- <th scope="col" class="text-center">Quantity</th> -->
+                  <th scope="col" class="text-center">Delete</th>
+                  <th scope="col" class="text-center">Sub-Total</th>
+                  <th scope="col" class="text-center">Total Price</th>
                 </tr>
               </thead>
               <tbody>
                   {% for item in items %}
                 <tr>
-                  <th scope="row"># {{cart.id}}</th>
-                  <th scope="row">{{item.id}}</th>
+                  <th scope="row" class="text-center"># {{cart.id}}</th>
+                  <th scope="row" class="text-center">{{item.id}}</th>
                   <!-- {{prod.get_absolute_url -->
-                  <td> <a href="#">{{item.product}}</a></td>
-                  <td>
+                  <td class="text-center"> <a href="#">{{item.product}}</a></td>
+                  <td class="text-center">
                       <div class="form-group">
-                          <form id="form-cart-change-items" class="form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' pk=item.id %}" method="post">
+                          <form class="form-cart-change-items form-inline my-2 my-lg-2 px-2" action="{% url 'prods:edit-cart-items' item.id %}" method="POST">
                                 {% csrf_token %}
                                 <input type="number" id="quantity" name="qty"
                                         class="form-control input-number text-center"
                                         value="{{item.qty}}"
                                         min="1"
-                                        max="100">
+                                        max="100"
+                                        style="width:80px;"
+                                        >
                                 <button type="submit" class="btn btn-success">Edit</button>
                            </form>
                       </div>
                     </td>
-                  <td>${{item.product.price}}</td>
-                  <td>{{item.qty}} pieces</td>
-                  <td><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket"></a></td>
-                  <td>${{item.sub_total}}</td>
+                  <td class="text-center">${{item.product.price}}</td>
+                  <!-- <td class="text-center">item.qty}} pieces</td> -->
+                  <td class="text-center"><a href="{% url 'prods:delete-cart-item' item.id %}"><img src="{% static 'images/trash.svg' %}" alt="basket"></a></td>
+                  <td class="text-center" id="itemSubTotal">${{item.sub_total}}</td>
 
                   <td></td>
                 </tr>
@@ -58,10 +60,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>Items In Total: {{qty}}</td>
+                    <td class="text-center" id="totalItemsInCart">Items In Total: {{qty}}</td>
                     <td></td>
                     <td></td>
-                    <td>Total Price (shipping excl) ${{price}}</td>
+                    <td class="text-center" id="totalPriceCart">Total Price (shipping excl) {{cart.total}}$</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -72,7 +74,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>
+                    <td class="text-center">
                         <form action="{% url 'orders:create-order' %}"  method="POST">
                             {% csrf_token %}
                             <input type="number" name="pk"
@@ -93,22 +95,31 @@
 {% endblock %}
 
 {% block js %}
+
 <script type="text/javascript">
-    //$("#form-cart-change-items").on('submit',function(e){
-        //e.preventDefault(e);
-        //$.ajax( {
-                //url:$(this).attr('action'),
-                //data:$(this).serialize(),
-                //type:$(this).attr("method"),
-                //success:function(response){
-                  // console.log('success');
-                   //console.log(response);
-                   //window.location = response;
-                //},
-                //error: function(err){
-                 //  console.log('error',err);
-               //}
-       //}) //end ajax
-    //}); //end $form-cart-change-items
+    $(".form-cart-change-items").on('submit',function(e){
+        e.preventDefault(e);
+        var totalPriceCart = $("#totalPriceCart");
+        var totalItemsInCart = $("#totalItemsInCart");
+        var qty = $("#quantity").val();
+        var subTotal = $("#itemSubTotal");
+        $.ajax({
+                url:$(this).attr('action'),
+                data:$(this).serialize(),
+                type:$(this).attr("method"),
+                success:function(response){
+                    console.log('success coming!'),
+                    console.log(response),
+                    totalPriceCart.html(response.cartTotalPrice),
+                    totalItemsInCart.html(response.totalItemsInCart),
+                    subTotal.html(response.subTotal)
+                }
+
+       }) //end ajax
+    }); //end $form-cart-change-items
 </script>
+<!-- error: function(err){
+  console.log('error',err);
+} -->
+
 {% endblock js%}

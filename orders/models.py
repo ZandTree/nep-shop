@@ -24,6 +24,8 @@ class Order(models.Model):
 
     def __str__(self):
         return "This is an order {}".format(self.order_id)
+    # def get_total(self):
+    #     self.total = self.shipping_total+X?
 
 def order_id_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.order_id: # if already created => no need to change

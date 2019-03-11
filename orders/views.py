@@ -17,10 +17,11 @@ class CreateOrder(View):
         cart = get_object_or_404(Cart,id=request.POST.get('pk'))
         total = cart.cart_items.aggregate(total=Sum('sub_total'))
         summa = total.get('total')
-        order = Order.objects.create(cart=cart,accepted=False,total=summa) # per default accepted=False)
+        # here += shipping_total
+        # let op *1001 ...order = Order.objects.create(cart=cart,accepted=False,total=summa) # per default accepted=False)
         # cart.accepted = True
         # cart.save()
         # new_cart = Cart.objects.create(user=request.user)
-        return render(request,'orders/create_order.html',{'cart':cart,'summa':summa})
+        return render(request,'orders/create_order.html',{'cart':cart,'summa':summa,'order':order})
 #
 #

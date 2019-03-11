@@ -9,9 +9,16 @@
     <h1>Welcome by CheckingOut</h1>
     <p>{{cart}}</p>
     <p>cart id {{cart.id}}</p>
-    {% if cart %}
+
+    <h4>Info about your order:</h4>
+    <ul>
+        <li>Order Num: {{order.id}}</li>
+        <li>Order generic Num {{order.order_id}}</li>
+        <li>order shipping: {{order.shipping_total}}</li>
+        <li>Order $total is {{order.total}}</li>
+    </ul>
     <p>cart.accepted, sum is: {{summa}}</p>
-    {% endif %}
+
 
 </div>
 
