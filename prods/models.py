@@ -139,7 +139,7 @@ class Cart(models.Model):
     total = models.DecimalField(decimal_places=2,
                         max_digits=10000000,
                         default = 0.00,
-                        editable=False)
+                        editable=True)
     active = models.BooleanField(default=True)
     objects = CartManager()
 

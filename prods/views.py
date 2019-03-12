@@ -4,6 +4,7 @@ from django.views.generic import (ListView,
                                 DetailView,
                                 CreateView,
                                 DeleteView,
+                                RedirectView,
                                 View)
 from .models import Product,Cart,CartItem,Category
 from .forms import *
@@ -14,6 +15,7 @@ from django.db.models import Sum
 #     def get(self,request):
 #         del request.session['cart_id']
 #         return redirect('/')
+
 
 class ProdList(ListView):
     model = Product
@@ -52,29 +54,28 @@ class AddItemToCart(View):
                 qty = 1
                 )
             messages.success(request, 'New item added to your cart.')
-        if request.is_ajax():
-            total_qty = cart.cart_items.aggregate(total=Sum('qty'))
-            num_items = total_qty.get('total')
-            return JsonResponse({"flag":flag,"numItems":num_items})
-        return redirect("/detail/{}/".format(slug))
+        total_qty = cart.cart_items.aggregate(total=Sum('qty'))
+        num_items = total_qty.get('total')
+        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
+        price = total_price.get('total_price')
+        cart.total = price
+        cart.save()
+        return JsonResponse({"flag":flag,"numItems":num_items,"price":price})
+        #return redirect("/detail/{}/".format(slug))
 
-class CartItemsView(ListView):
-    context_object_name = 'items'
-    template_name = 'prods/cart.html'
-
-    def get_queryset(self,*args,**kwargs):
+class CartItemsView(View):
+    def get(self,request):
+        context = {}
         cart = Cart.objects.new_or_get(self.request)
-        return cart.cart_items.all()
-
-    def get_context_data(self,*args,**kwargs):
-        context = super().get_context_data(*args,**kwargs)
-        cart = Cart.objects.new_or_get(self.request)
+        items = cart.cart_items.all()
         context['cart'] = cart
-        # что-то непонятное
-        one_item = cart.cart_items.all().last()
-        # if one_item:
-        #     context['prod'] = Product.objects.get(id=one_item.product_id)
-        return context
+        context['items'] = items
+        return render(request,'prods/cart.html',context)
+
+class RedirectToProduct(View):
+    def get(self,request,pk):
+        prod = Product.objects.get(id=pk)
+        return redirect("/detail/{}/".format(prod.slug))
 
 
 class EditCart(View):
@@ -97,12 +98,15 @@ class EditCart(View):
         else:
             messages.error(request, 'Amount of product should be 1 or more.')
         item_sub_total = item.sub_total
+        print(item_sub_total)
         total_qty = cart.cart_items.aggregate(total=Sum('qty'))
         num_items_cart = total_qty.get('total')
         total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
         price = total_price.get('total_price')
         cart.total = price
         cart.save()
+        print({"totalItemsInCart":num_items_cart,"cartTotalPrice":price,"itemSubTotal":item_sub_total})
+        #return redirect("/detail/{}/".format(pk))
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,
                         "cartTotalPrice":price,
@@ -111,8 +115,17 @@ class EditCart(View):
 
 class DeleteCartItem(View):
     def get(self,request,pk):
+        cart = Cart.objects.new_or_get(request)
         cart_item = get_object_or_404(CartItem,id=pk)
         cart_item.delete()
+        cart.save()
         messages.warning(request,'product deleted from your cart')
-        return JsonResponse({"ok":"ok"})
-        #return redirect('prods:cart')
+        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
+        price = total_price.get('total_price')
+        #cart.total = price
+        num_items_cart = cart.cart_items.count()
+        return JsonResponse({
+                        "totalItemsInCart":num_items_cart,
+                        "cartTotalPrice":price})
+
+        
