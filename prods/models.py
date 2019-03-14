@@ -4,7 +4,7 @@ from django.http import Http404
 from PIL import Image
 from mptt.models import MPTTModel,TreeForeignKey
 from bookstore.utils import make_unique_slug
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -165,3 +165,10 @@ def product_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.slug:
         instance.slug = make_unique_slug(instance)
 pre_save.connect(product_presave_receiver,sender=Product)
+
+@receiver(post_save,sender = User)
+def create_user_cart(sender,instance,created,**kwargs):
+    """If New User created, create Cart"""
+    if created:
+        # let op: id card will be change (ForeignKey)
+        Cart.objects.create(user=instance)

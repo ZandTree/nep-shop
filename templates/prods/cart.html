@@ -133,15 +133,12 @@
                 $(".on-move-"+ removeId).css('display','none')
                 totalPriceCart.html(response.cartTotalPrice)
                 totalItemsInCart.html(response.totalItemsInCart)
+                cart_total.html(response.totalItemsInCart)
                 if(parseInt(response.totalItemsInCart)==0){
                     hideTable.css('display','none'),
                     cart_total.html(response.totalItemsInCart),
                     $(".empty").html("Your Cart is empty")
-
                 }
-
-
-
             },
             error: function(err){
               console.log('error',err)
@@ -149,5 +146,4 @@
         })
     })
 </script>
-
 {% endblock js%}

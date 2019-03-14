@@ -11,6 +11,7 @@
     <div class="container ">
         <!-- div= row cards -->
         <div class="row">
+            {% if products %}
             {% for prod in products %}
             <div class="col-md-4 py-3">
                 {{forloop.counter}}
@@ -23,6 +24,11 @@
                 </div>
                 {% endif %}
             {% endfor %}
+            {% else %}
+            <div class="container">
+                <p>No products</p>
+            </div>
+            {% endif %}
             </div>
         <hr>
         <div class="row"><!-- div pagination -->

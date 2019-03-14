@@ -16,7 +16,6 @@ from django.db.models import Sum
 #         del request.session['cart_id']
 #         return redirect('/')
 
-
 class ProdList(ListView):
     model = Product
     context_object_name = 'products'
@@ -53,7 +52,7 @@ class AddItemToCart(View):
                 product = prod,
                 qty = 1
                 )
-            messages.success(request, 'New item added to your cart.')
+            #messages.success(request, 'New item added to your cart.')
         total_qty = cart.cart_items.aggregate(total=Sum('qty'))
         num_items = total_qty.get('total')
         total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
@@ -94,7 +93,7 @@ class EditCart(View):
             )
             item.qty = int(qty)
             item.save()
-            messages.success(request, 'Qty changed.')
+            #messages.success(request, 'Qty changed.')
         else:
             messages.error(request, 'Amount of product should be 1 or more.')
         item_sub_total = item.sub_total
@@ -105,7 +104,6 @@ class EditCart(View):
         price = total_price.get('total_price')
         cart.total = price
         cart.save()
-        print({"totalItemsInCart":num_items_cart,"cartTotalPrice":price,"itemSubTotal":item_sub_total})
         #return redirect("/detail/{}/".format(pk))
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,
@@ -119,13 +117,12 @@ class DeleteCartItem(View):
         cart_item = get_object_or_404(CartItem,id=pk)
         cart_item.delete()
         cart.save()
-        messages.warning(request,'product deleted from your cart')
+        #messages.warning(request,'product deleted from your cart')
         total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
         price = total_price.get('total_price')
-        #cart.total = price
-        num_items_cart = cart.cart_items.count()
+        total_qty = cart.cart_items.aggregate(total=Sum('qty'))
+        num_items_cart = total_qty.get('total')
+        #num_items_cart = cart.cart_items.count()
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,
                         "cartTotalPrice":price})
-
-        

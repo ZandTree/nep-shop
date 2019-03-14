@@ -10,6 +10,24 @@ var csrftoken = Cookies.get('csrftoken');
     $.ajaxSetup({
         headers: {"X-CSRFToken": csrftoken}
     });
+$(".need_auth").submit(function(e){
+         e.preventDefault();
+         console.log('need auth');
+         console.log('inside ajax submit');
+         var url = $(this).attr('action');
+         var data = $(this).serialize();
+         $.post(
+            url,
+            data,
+            function(response){
+                //almost impossible to see (because of reload)
+                //console.log('respones coming');
+                //console.log(response);
+                window.location = response.location;
+            }
+
+        );
+     });
 
 $('#minus').on('click',function(){
         //e.preventDefault();
@@ -27,16 +45,3 @@ $('#plus').on('click',function(){
     qty = $("#qty").val()
 
 });
-
-// $('#qty_form').on('submit',function(e){
-//         e.preventDefault();
-//         //e.preventDefault();// stops browser from sending form and reload
-//         var url = $(this).attr('action');
-//         console.log(url);
-//         //var data = $("#qty").val(); //а представь,у тебя их вагон?
-//         var data = $(this).serialize();
-//         $.post(url,data,function(resp){
-//             $("#note").html('Thanks');
-//             $("#cart_total").html(resp.qty);
-//         });
-// });

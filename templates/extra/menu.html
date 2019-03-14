@@ -33,34 +33,63 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item">
-                       <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'search:sale-search' %}">Sale</a>
                 </li>
+                {% if user.is_authenticated%}
                 <li class="nav-item">
-                       <a class="nav-link" href="">Register</a>
+                       <a class="nav-link" href="/accounts/logout/">Log Out</a>
                 </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LogIn\SignUp</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                {% endif %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'prods:cart' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                             Cart <span id="cart_total" class="badge badge-secondary">{{qty}}</span>
                             <span class="sr-only">(current)</span></a>
                 </li>
-
                 <li class="nav-item">
-                      <a class="nav-link" href="">SignUp or Login</a>
-                </li>
-                <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          NL
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item" href="#">En</a>
-                        </div>
+                       <a class="nav-link" href="#">Wish List</a>
                 </li>
                </ul>
            </div>
-
        </nav>
        </div>
+
+{# Login modal #}
+<!-- div to display = link modal -->
+<div class="modal fade" id="loginModal">
+   <div class="modal-dialog modal-dialog-centered auth-modal">
+       <div class="modal-content">
+           <!-- Modal Header -->
+           <div class="modal-header">
+               <h4 class="modal-title">Log In</h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+           </div>
+
+           <!-- Modal body -->
+           <div class="modal-body">
+               {% include 'account/ajax_login.html' %}
+           </div>
+       </div>
+   </div>
+</div>
+
+{# Signup modal #}
+<div class="modal fade" id="signupModal">
+   <div class="modal-dialog modal-dialog-centered auth-modal">
+       <div class="modal-content">
+           <!-- Modal Header -->
+           <div class="modal-header">
+               <h4 class="modal-title">Sign Up</h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+           </div>
+
+           <!-- Modal body -->
+           <div class="modal-body">
+               {% include 'account/ajax_signup.html' %}
+           </div>
+       </div>
+   </div>
+</div>
