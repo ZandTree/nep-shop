@@ -1,0 +1,33 @@
+{% extends 'prods/base.html'%}
+{% load staticfiles %}
+
+{% block title %}create-order{% endblock %}
+{% block content %}
+
+{% block product%}
+<div class="container">
+    {% if not billing_profile %}
+    <div class="row text-center">
+        <div class="col-md-6">
+            <!-- <p>Here will come a form to login</p> -->
+            <!-- <p>see also adjustment in form ajax for NEXT redirect</p> -->
+            <p class="lead"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LogIn</a></p>
+        </div>
+        <div class="col-md-6">
+            <p >Continue as a quest</p>
+        </div>
+    </div>
+        <p>Login</p>
+        <p></p>
+    {% else %}
+    <!-- <p>Here var=object== order</p> -->
+    <h1>Welcome by CheckingOut</h1>
+    <p>Cart Total {{object.cart.total}}</p>
+    <p>Shipping Total: {{object.shipping_total}}</p>
+    <p>Here you need to calc Cart Total + Shipping Total</p>
+    <p>Order Total: {{object.total}}</p>
+    {% endif %}
+
+</div>
+{% endblock product%}
+{% endblock content%}

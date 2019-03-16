@@ -5,9 +5,12 @@ def count_items_cart(request):
     """
     Amount items for menubar
     """
-    cart = Cart.objects.new_or_get(request)
+    cart = Cart.objects.new_or_get(request,accepted=False)
+    # print('cart is:',cart)
+    # print('accepted is:',cart.accepted)
     qty = cart.cart_items.aggregate(total=Sum('qty'))
     total = qty.get('total')
+    # print('total',total)
     if total:
         return {'qty':total}
     else:
@@ -15,4 +18,4 @@ def count_items_cart(request):
         return {"qty":total}
 
 #  LET OP : THERE IS A PROBLEM WITH ANO USER AND THIS context_processors
-# solution: take .new_or_get(request) 
+# solution: take .new_or_get(request)

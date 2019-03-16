@@ -9,8 +9,10 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['title','slug']
     class Meta:
         model = Product
+class CartAdmin(admin.ModelAdmin):
+    list_display=['id','user','accepted','total']
 
 admin.site.register(Category, CustomMPTTModelAdmin)
 admin.site.register(Product,ProductAdmin)
-admin.site.register(Cart)
+admin.site.register(Cart,CartAdmin)
 admin.site.register(CartItem)

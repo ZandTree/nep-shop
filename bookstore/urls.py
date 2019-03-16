@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('search/',include('search.urls',namespace='search')),
     path('orders/',include('orders.urls',namespace='ord')),
+    #path('profiles/',include('profiles.urls',namespace='profiles')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

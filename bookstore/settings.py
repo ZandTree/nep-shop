@@ -131,9 +131,12 @@ USE_TZ = True
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = None #"optional"
 ACCOUNT_USERNAME_REQUIRED = False
 LOGIN_URL_REDIRECT = "/"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "My subject: "
+# auto loggin in after confirmation(otherwise will be redirected to log-in)
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 ACCOUNT_ADAPTER = 'adapter.AccountAdapter'
 

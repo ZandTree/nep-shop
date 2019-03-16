@@ -11,9 +11,18 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'prods:home' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                   <a class="nav-link" href="">hi,{{user}}</a>
+                       <a class="nav-link" href="">Hello,{{user}}</a>
                 </li>
+                <li class="nav-item">
+                       <a class="nav-link" href="#">Your Account</a>
+                </li>
+                   {% else %}
+                <li>
+                       <a class="nav-link" href="">Hello,quest</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                    <a class="nav-link" href="">Kill session</a>
                 </li>

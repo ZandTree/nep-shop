@@ -1,6 +1,10 @@
 {% load i18n account %}
-<form method="POST" action="{% url 'account_login' %}" class="need_auth">
+{% if form.erorrs%}
+<p>{{form.erorrs}}</p>
+{% endif %}
+<form method="POST" action="{% url 'account_login' %}" data-next ="{{next_url}}" class="need_auth">
     {% csrf_token %}
+    <!-- let op: next url -->
     {% if erorrs %}
         <ul class="errorlist">
             <li>Field required.</li>
@@ -31,6 +35,7 @@
     {% if erorrs %}
         <ul class="errorlist">
             <li>Field required.</li>
+            <li>smth went wrong{{erorrs}}</li>
         </ul>
     {% endif %}
     <p>

@@ -71,7 +71,7 @@
                     <td></td><td></td><td></td><td></td><td></td><td></td>
                     <td></td><td></td>
                             <td class="text-center">
-                            <form action="{% url 'orders:create-order' %}"  method="POST">
+                            <form action="{% url 'orders:checkout' %}"  method="POST">
                             {% csrf_token %}
                             <input type="number" name="pk"
                                      value="{{cart.id}}"                                         hidden >

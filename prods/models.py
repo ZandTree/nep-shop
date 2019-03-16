@@ -86,39 +86,29 @@ class Product(models.Model):
             img.save(self.photo.path)
 
 class CartManager(models.Manager):
-    def new_or_get(self,request):
+    def new_or_get(self,request,accepted=False):
         #del request.session['cart_id']
         cart_id = request.session.get('cart_id',None)
-        qs = self.get_queryset().filter(id=cart_id)
+        qs = self.get_queryset().filter(id=cart_id,accepted=False)
         if qs.count() == 1:
-            new_obj = False
-            # print('cart already existed')
+            #уже есть
             cart_obj = qs.first()
-            print('It is this cart',cart_obj.user)
+            print('model manager msg: this cart belongs to:',cart_obj.user)
             if request.user.is_authenticated and cart_obj.user is None:
-                # case:user has an account but did shopping being not logged-in
-                # get prev cart
-                prev_cart = get_object_or_404(Cart,user=request.user)
-                cart_obj.user = request.user
-                # replace user=NULL to request.user
-                items_in_prev_cart = prev_cart.cart_items.all()
-                if items_in_prev_cart:
-                    # set() clear + new vs update()?
-                    cart_obj.cart_items.set(items_in_prev_cart)
-                    # replace items from prev cart to the new one
-                    print('cart_items added from the prev cart')
+                # taking previous cart auth user
+                prev_cart = get_object_or_404(Cart,user=request.user,accepted=False)
+                prev_cart.delete() # prev cart auth user will be deleted
+                cart_obj.user = request.user # anonymnus cart gets owner
                 cart_obj.accepted = False
-                prev_cart.delete()
-                print('prev cart deleted')
                 cart_obj.save()
                 print('user cart user=NULL converted to req.user',request.user)
 
         else:
+            # inc case of just created user with cart but NO session['cart_id']
             cart_obj = Cart.objects.new(user=request.user,accepted=False)
-            new_obj = True
             print('new cart obj created')
             request.session['cart_id'] = cart_obj.id
-            print("session cart-id istablished",cart_obj.id)
+            print("session cart-id established",cart_obj.id)
         return cart_obj
 
     def new(self,user=None,accepted=False):
@@ -147,6 +137,16 @@ class Cart(models.Model):
         if self.user:
             return "cart id:{} user:{}".format(self.id,self.user.id)
         return  "cart id:{} anonymnus".format(self.id)
+    # def get_sum_items_price(self):
+    #     total_price = self.cart_items.aggregate(total_price=Sum('sub_total'))
+    #     price = total_price.get('total_price')
+    #     return price
+    #
+    # def get_sum_items_amount(self):
+    #     total_qty = self.cart_items.aggregate(total=Sum('qty'))
+    #     num_items_cart = total_qty.get('total')
+    #     return num_items_cart
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_items')
@@ -171,4 +171,5 @@ def create_user_cart(sender,instance,created,**kwargs):
     """If New User created, create Cart"""
     if created:
         # let op: id card will be change (ForeignKey)
-        Cart.objects.create(user=instance)
+        cart = Cart.objects.create(user=instance)
+        print('new cart with id',cart.id)

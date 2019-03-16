@@ -36,6 +36,15 @@ class AddItemToCart(View):
     def get(self,request,slug,pk):
         #del request.session['cart_id']
         cart = Cart.objects.new_or_get(request)
+        # cart_id = request.session.get('cart_id',None)
+        # if user.is_authenticated:
+        #     cart = Cart.objects.get(request.user,accepted=False)
+        # # case: user has an account but forgot to login
+        # elif not user.is_authenticated and request.session['cart_id']:
+        #     cart = Cart.objects.get(id='cart_id')
+        # else:
+        #     cart = Cart.objects.create(user=request.user,accepted=False)
+        #     request.session['cart_id'] = cart.id
         prod = get_object_or_404(Product,id=pk)
         flag = False
         try:
@@ -65,7 +74,8 @@ class AddItemToCart(View):
 class CartItemsView(View):
     def get(self,request):
         context = {}
-        cart = Cart.objects.new_or_get(self.request)
+        cart = Cart.objects.new_or_get(self.request,accepted=False)
+        print("из вью привет cart accepted:",cart.accepted)
         items = cart.cart_items.all()
         context['cart'] = cart
         context['items'] = items
@@ -75,7 +85,6 @@ class RedirectToProduct(View):
     def get(self,request,pk):
         prod = Product.objects.get(id=pk)
         return redirect("/detail/{}/".format(prod.slug))
-
 
 class EditCart(View):
     def post(self,request,pk):
@@ -122,7 +131,6 @@ class DeleteCartItem(View):
         price = total_price.get('total_price')
         total_qty = cart.cart_items.aggregate(total=Sum('qty'))
         num_items_cart = total_qty.get('total')
-        #num_items_cart = cart.cart_items.count()
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,
                         "cartTotalPrice":price})
