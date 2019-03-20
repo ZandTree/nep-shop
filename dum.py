@@ -25,3 +25,4 @@ from django import forms
     #     email = form.cleaned_data.get("email")
     #     new_guest_email = Guest.objects.create(email=email)
     #     return redirect(self.get_next_url())
+#*************************************************************************

@@ -15,12 +15,11 @@ from django.db.models import Sum
 #     def get(self,request):
 #         del request.session['cart_id']
 #         return redirect('/')
-
+#
 class ProdList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'prods/index.html'
-
 
 class ProdDetail(DetailView):
     model = Product
@@ -36,15 +35,6 @@ class AddItemToCart(View):
     def get(self,request,slug,pk):
         #del request.session['cart_id']
         cart = Cart.objects.new_or_get(request)
-        # cart_id = request.session.get('cart_id',None)
-        # if user.is_authenticated:
-        #     cart = Cart.objects.get(request.user,accepted=False)
-        # # case: user has an account but forgot to login
-        # elif not user.is_authenticated and request.session['cart_id']:
-        #     cart = Cart.objects.get(id='cart_id')
-        # else:
-        #     cart = Cart.objects.create(user=request.user,accepted=False)
-        #     request.session['cart_id'] = cart.id
         prod = get_object_or_404(Product,id=pk)
         flag = False
         try:
@@ -73,12 +63,18 @@ class AddItemToCart(View):
 
 class CartItemsView(View):
     def get(self,request):
+        print("view cartitm calling")
         context = {}
         cart = Cart.objects.new_or_get(self.request,accepted=False)
         print("из вью привет cart accepted:",cart.accepted)
         items = cart.cart_items.all()
         context['cart'] = cart
         context['items'] = items
+        qty = cart.get_sum_items_amount()
+        if isinstance(qty,int):
+            context['qty'] = qty
+        else:
+            context['qty'] = 0
         return render(request,'prods/cart.html',context)
 
 class RedirectToProduct(View):
@@ -106,11 +102,8 @@ class EditCart(View):
         else:
             messages.error(request, 'Amount of product should be 1 or more.')
         item_sub_total = item.sub_total
-        print(item_sub_total)
-        total_qty = cart.cart_items.aggregate(total=Sum('qty'))
-        num_items_cart = total_qty.get('total')
-        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
-        price = total_price.get('total_price')
+        num_items_cart = cart.get_sum_items_amount()
+        price = cart.get_sum_items_price()
         cart.total = price
         cart.save()
         #return redirect("/detail/{}/".format(pk))
@@ -127,10 +120,8 @@ class DeleteCartItem(View):
         cart_item.delete()
         cart.save()
         #messages.warning(request,'product deleted from your cart')
-        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
-        price = total_price.get('total_price')
-        total_qty = cart.cart_items.aggregate(total=Sum('qty'))
-        num_items_cart = total_qty.get('total')
+        num_items_cart = cart.get_sum_items_amount()
+        price = cart.get_sum_items_price()
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,
                         "cartTotalPrice":price})

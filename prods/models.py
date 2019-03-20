@@ -87,38 +87,43 @@ class Product(models.Model):
 
 class CartManager(models.Manager):
     def new_or_get(self,request,accepted=False):
-        #del request.session['cart_id']
         cart_id = request.session.get('cart_id',None)
-        qs = self.get_queryset().filter(id=cart_id,accepted=False)
+        qs = Cart.objects.filter(id=cart_id,accepted =False)
+        print(qs.count())
+        # look for existing cart through session cart_id
         if qs.count() == 1:
-            #уже есть
-            cart_obj = qs.first()
-            print('model manager msg: this cart belongs to:',cart_obj.user)
+            cart_obj = qs.last()
             if request.user.is_authenticated and cart_obj.user is None:
-                # taking previous cart auth user
-                prev_cart = get_object_or_404(Cart,user=request.user,accepted=False)
-                prev_cart.delete() # prev cart auth user will be deleted
-                cart_obj.user = request.user # anonymnus cart gets owner
-                cart_obj.accepted = False
-                cart_obj.save()
-                print('user cart user=NULL converted to req.user',request.user)
-
+                # user is auth but current cart with user=None
+                try:
+                    # case: user has already an account but put items into the cart
+                    # without login ==> current cart becomes user's; prev gets deleted
+                    auth_user_cart = Cart.objects.get(user=request.user,accepted=False)
+                    auth_user_cart.delete()
+                    #print("prev cart of this user is deleted")
+                    cart_obj.user = request.user
+                    cart_obj.save()
+                except:
+                    # user collected item into anonym cart and decided to signup
+                    cart_obj.user = request.user
+                    cart_obj.save()
+                # print("omzet to a formaly anonym cart ==> auth user: Done")
         else:
-            # inc case of just created user with cart but NO session['cart_id']
-            cart_obj = Cart.objects.new(user=request.user,accepted=False)
-            print('new cart obj created')
+            if request.user.is_authenticated:
+                # request.session['cart_id'] not found: auth user hasn't used cart routs yet
+                try:
+                    cart_obj = Cart.objects.get(user=request.user,accepted=False)
+                    print("found cart of auth user")
+                except:
+                    cart_obj = Cart.objects.create(user=request.user)
+                    print("creating a new cart for auth")
+            else:
+                # anonymnus user uses cart routs
+                cart_obj = Cart.objects.create(user=None)
+                print("creating a new cart for anonyn")
             request.session['cart_id'] = cart_obj.id
-            print("session cart-id established",cart_obj.id)
+            print("setting a session cart_id")
         return cart_obj
-
-    def new(self,user=None,accepted=False):
-        print('manager "new" calling: user is ',user)
-        user_obj = None
-        if user is not None:
-            if user.is_authenticated:
-                user_obj = user
-        return self.model.objects.create(user=user_obj,accepted=False)
-
 
 
 class Cart(models.Model):
@@ -137,15 +142,22 @@ class Cart(models.Model):
         if self.user:
             return "cart id:{} user:{}".format(self.id,self.user.id)
         return  "cart id:{} anonymnus".format(self.id)
-    # def get_sum_items_price(self):
-    #     total_price = self.cart_items.aggregate(total_price=Sum('sub_total'))
-    #     price = total_price.get('total_price')
-    #     return price
-    #
-    # def get_sum_items_amount(self):
-    #     total_qty = self.cart_items.aggregate(total=Sum('qty'))
-    #     num_items_cart = total_qty.get('total')
-    #     return num_items_cart
+
+    def get_sum_items_price(self):
+        """
+        return cost  of all products in cart
+        """
+        total_price = self.cart_items.aggregate(total_price=Sum('sub_total'))
+        price = total_price.get('total_price')
+        return price
+
+    def get_sum_items_amount(self):
+        """
+        return amount of all products in cart
+        """
+        total_qty = self.cart_items.aggregate(total=Sum('qty'))
+        num_items_cart = total_qty.get('total')
+        return num_items_cart
 
 
 class CartItem(models.Model):
@@ -165,11 +177,10 @@ def product_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.slug:
         instance.slug = make_unique_slug(instance)
 pre_save.connect(product_presave_receiver,sender=Product)
-
-@receiver(post_save,sender = User)
-def create_user_cart(sender,instance,created,**kwargs):
-    """If New User created, create Cart"""
-    if created:
-        # let op: id card will be change (ForeignKey)
-        cart = Cart.objects.create(user=instance)
-        print('new cart with id',cart.id)
+#
+# @receiver(post_save,sender = User)
+# def create_user_cart(sender,instance,created,**kwargs):
+#     """If New User created, create Cart"""
+#     if created:
+#         # let op: id card will be change (ForeignKey)
+#         cart = Cart.objects.create(user=instance)

@@ -5,6 +5,7 @@ app_name = 'prods'
 urlpatterns = [
     path('',views.ProdList.as_view(),name = 'home'),
     #path('kill-session',views.KillSession.as_view(), name='kill'),
+    #path('',views.prod_list,name = 'home'),
     path('detail/<slug:slug>/',views.ProdDetail.as_view(),name = 'detail'),
     path('prod-view/<int:pk>/',views.RedirectToProduct.as_view(),name = 'prod-view'),
     path('cart/',views.CartItemsView.as_view(),name = 'cart'),

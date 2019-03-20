@@ -12,11 +12,12 @@ var csrftoken = Cookies.get('csrftoken');
     });
 $(".need_auth").submit(function(e){
          e.preventDefault();
-         console.log('need auth');
          console.log('inside ajax submit');
          var url = $(this).attr('action');
-         var next_ = $(this).attr('data-next');
-         console.log("data-next is:",next_);
+
+
+         // var next_ = $(this).attr('data-next');
+         // console.log("data-next is:",next_);
          var data = $(this).serialize();
          $.post(
             url,
@@ -28,8 +29,10 @@ $(".need_auth").submit(function(e){
                 // if(next_ !=""){
                 //     window.location=next_
                 // }else{
-                window.location = response.location;
-                console.log(response.location);
+                var logEr =$("#er").html({{error_message}})
+                window.location = response.location
+
+
             })
             }
 

@@ -10,6 +10,11 @@
             <li>Field required.</li>
         </ul>
     {% endif %}
+    {% if form.error_messages %}
+        <ul class="errorlist">
+            <li>form.error_message</li>
+        </ul>
+    {% endif %}
      <p> <input type="email"
             name="login"
             placeholder="Your email"

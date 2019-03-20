@@ -1,6 +1,3 @@
-{% if erorrs%}
-<p>{{erorrs}}</p>
-{% endif %}
 <form id="signup_form" class="need_auth" method="post" data-next ="{{next_url}}" action="{% url 'account_signup' %}">
 
     {% csrf_token %}
@@ -36,12 +33,19 @@
               id="id_password2"
               class="form-control">
     </p>
-    {% if erorrs %}
+    <p class="er">Er comes ...</p>
+    <!-- {% if form.error_messages %}
+        <ul class="errorlist">
+            <li>form.error_message</li>
+        </ul>
+    {% endif %} -->
+
+    <!-- {% if erorrs %}
+        {{errors}}
         <ul class="errorlist">
             <li>Field required.</li>
-            <li>smth went wrong{{erorrs}}</li>
         </ul>
-    {% endif %}
+    {% endif %} -->
 
     <button class="btn btn-primary" type="submit">Sign Up</button>
 </form>
