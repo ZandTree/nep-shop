@@ -36,7 +36,15 @@ class Order(models.Model):
 
     def __str__(self):
         return "This is an order {}".format(self.order_id)
+
+    def save(self,*args,**kwargs):
+        """ generate price for each cart_item"""
+        self.total = self.cart.total + self.shipping_total
+        super().save(*args,**kwargs)
     
+    def get_total(self):
+        return self.total
+
 
 def order_id_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.order_id: # if already created => no need to change
