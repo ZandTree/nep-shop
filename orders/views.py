@@ -1,46 +1,30 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.views.generic import View
+from django.views.generic import View,ListView   #FormView
 from prods.models import Cart
 from .models import Order
 from django.db.models import Sum
 from profiles.models import BillingProfile
+from .forms import BillingProfileForm
 
-class CheckOut(View):
+class CreateOrder(View):
+    """
+    Display existing order or
+    create a new one triggered by cart status => accepted False
+    """
+    # LoginRequiredMixin????
     def post(self,request):
-        next_url = "orders:checkout"
-        # next_ = request.GET.get("next")
-        # next_post = request.POST.get("next")
-        # redirect_path = next_  #or next_post or None
-        cart = Cart.objects.new_or_get(request)
-        # order_object = None
-        # if cart.accepted == True or cart.cart_items.count()==0:
-        #     #print("Your cart is empty or #already ***")
-        #     return redirect("/")
-        # else:
-        #     order_object,new_order_obj = Order.objects.get_or_create(cart=cart)
-        #     cart.accepted = True
-        #     cart.save()
-        #     new_cart =Cart.objects.create(user=request.user,accepted=False)
-        # user = request.user
-        # billing_profile = None
-        # if user.is_authenticated:
-        #     billing_profile,billing_profile_created = BillingProfile.objects.get_or_create(user=user,email=user.email)
-        # context = {
-        #     "object":order_object,
-        #     "billing_profile":billing_profile,
-        #     "next_url":next_url
-        # }
-        context = {'cart':cart}
-        return render(request,'orders/checkout.html',context)
-
+        pk_cart = request.POST.get('pk','pk not found')
+        cart = Cart.objects.get(id=pk_cart,accepted=False)
+        order = Order.objects.create(cart=cart) # per default accepted=False)
+        order.update_total()
+        cart.accepted = True
+        cart.save()
+        new_cart = Cart.objects.create(user=request.user)
+        request.session["cart_id"] = new_cart.id
+        return redirect('orders:list-orders')
 
 
 #
-# class CreateOrder(View):
-#     """
-#     Display existing order or
-#     create a new one triggered by cart status => accepted False
-#     """
 #     def post(self,request):
 #         cart = get_object_or_404(Cart,id=request.POST.get('pk'))
 #         total = cart.cart_items.aggregate(total=Sum('sub_total'))
@@ -52,4 +36,6 @@ class CheckOut(View):
         # new_cart = Cart.objects.create(user=request.user)
         #return render(request,'orders/create_order.html',{'cart':cart,'summa':summa,'order':order})
 #
-#
+class ListOrder(ListView):
+    model = Order
+    template_name = 'orders/list_orders.html'

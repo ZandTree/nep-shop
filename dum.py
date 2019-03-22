@@ -26,3 +26,41 @@ from django import forms
     #     new_guest_email = Guest.objects.create(email=email)
     #     return redirect(self.get_next_url())
 #*************************************************************************
+# <script type="text/javascript">
+#     var proceed = $("#proceed");
+#     var showAuth = $("#show-auth");
+#     $(".go-on").on('click',function(e){
+#         console.log("smb wants to login-signup=> but clicked");
+#         e.preventDefault();
+#         url = $(this).attr('href');
+#         console.log("should be send to url",url);
+#         $.ajax({
+#             url:url,
+#             type:"GET",
+#             success:function(response){
+#                 //show button Proceed
+#                 console.log("success coming");
+#                 showAuth.css('display','none');
+#                 console.log("block auth but is disappeared")
+#             },
+#             error:function(err){
+#                 console.log('error',err);
+#             }
+#         })//end ajax
+#     })//end on click
+# </script>
+# <tr id="show-auth">
+# <td></td><td></td><td></td><td></td><td></td><td></td>
+# <td></td>
+#     <td class="text-center">
+#         <button class="btn btn-success">
+#             <a class="go-on" href="{% url 'account_login' %}">Log In</a>
+#         </button>
+#     </td>
+#     <td class="text-center">
+#     <button class="btn btn-success">
+#         <a class="go-on" href="{% url 'account_signup' %}">Sign Up</a>
+#     </button>
+#     </td>
+# </tr>
+# {% endif %}

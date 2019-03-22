@@ -67,11 +67,12 @@
                         <td class="text-center" id="totalItemsInCart">Items In Total: {{qty}}</td>
                         <td class="text-center" id="totalPriceCart">Total Price (shipping excl) S {{cart.total}}</td>
                     </tr>
-                    <tr>
+                    <tr id="show-proceed">
+                    {% if user.is_authenticated%}
                     <td></td><td></td><td></td><td></td><td></td><td></td>
                     <td></td><td></td>
                             <td class="text-center">
-                            <form action="{% url 'orders:checkout' %}"  method="POST">
+                            <form action="{% url 'orders:create-order' %}"  method="POST">
                             {% csrf_token %}
                             <input type="number" name="pk"
                                      value="{{cart.id}}"                                         hidden >
@@ -79,13 +80,35 @@
                                 class="btn btn-success">
                                 </form>
                             </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
-        </div>
+                    </tr>
+                    {% else %}
+                    <tr id="show-auth">
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                        <td class="text-center">
+                            <form class="showAuth" action="{% url 'account_login' %}" method="post">
+                                {% csrf_token%}
+                                <button class="btn btn-success">
+                                    Log In
+                                </button>
+                            </form>
+                        </td>
+                        <td class="text-center">
+                        <form class="showAuth" action="{% url 'account_signup' %}" method="post">
+                            {% csrf_token%}
+                            <button class="btn btn-success">
+                                Sign Up
+                            </button>
+                        </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
+    </div> <!--end div row-->
 </div>
 {% endblock %}
 
@@ -124,12 +147,11 @@
         var totalItemsInCart = $("#totalItemsInCart");
         url = $(this).attr('href');
         var removeId=$(this).attr('data-id');
-
         $.ajax({
             url:url,
             type:"GET",
             success:function(response){
-                console.log('greet from delete')
+                //console.log('greet from delete')
                 $(".on-move-"+ removeId).css('display','none')
                 totalPriceCart.html(response.cartTotalPrice)
                 totalItemsInCart.html(response.totalItemsInCart)
@@ -145,5 +167,30 @@
           }
         })
     })
+</script>
+<script type="text/javascript">
+    var proceed = $("#proceed");
+    var showAuth = $(".show-auth");
+    $(".showAuth").on('sub,it',function(e){
+        console.log("smb wants to login-signup=> but clicked");
+        e.preventDefault();
+        url = $(this).attr('href');
+        console.log("should be send to url",url);
+        $.ajax({
+            url:url,
+            type:"POST",
+            success:function(response){
+                //show button Proceed
+                //console.log(response);
+                window.location ="{% url 'prods:cart' %}"
+                console.log("success coming");
+                showAuth.css('display','none');
+                console.log("block auth but is disappeared")
+            },
+            error:function(err){
+                console.log('error',err);
+            }
+        })//end ajax
+    })//end on click
 </script>
 {% endblock js%}

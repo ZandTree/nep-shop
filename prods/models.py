@@ -39,6 +39,7 @@ def upload_img_file(instance,filepath):
     if len(name) > 5:
         name = name[:5]
     new_file_name = name + ext
+    # to correct os.path.join('prod_{0}','{1}').format(instance.id,new_file_name)
     return os.path.join('image','prod_{0}','{1}').format(instance.id,new_file_name)
 
 class ProductManager(models.Manager):
@@ -73,11 +74,14 @@ class Product(models.Model):
 
     @property
     def get_photo_url(self,*args,**kwargs):
+        """ return path to prod image """
         if self.photo:
             return "/media/{}".format(self.photo)
         else:
+            # default img
             return "/static/images/carrot.jpg/"
     def save(self,*args,**kwargs):
+        """ adjust image size"""
         super().save(*args,**kwargs)
         if self.photo:
             img = Image.open(self.photo.path)
@@ -87,6 +91,7 @@ class Product(models.Model):
 
 class CartManager(models.Manager):
     def new_or_get(self,request,accepted=False):
+        """ return cart object for either anonymnus user,or authenticated user"""
         cart_id = request.session.get('cart_id',None)
         qs = Cart.objects.filter(id=cart_id,accepted =False)
         print(qs.count())
@@ -156,8 +161,12 @@ class Cart(models.Model):
         return amount of all products in cart
         """
         total_qty = self.cart_items.aggregate(total=Sum('qty'))
-        num_items_cart = total_qty.get('total')
-        return num_items_cart
+        num_items_cart = total_qty.get('total',0)
+        if isinstance(num_items_cart,int):
+            qty =num_items_cart
+        else:
+            qty = 0
+        return qty
 
 
 class CartItem(models.Model):
@@ -182,5 +191,4 @@ pre_save.connect(product_presave_receiver,sender=Product)
 # def create_user_cart(sender,instance,created,**kwargs):
 #     """If New User created, create Cart"""
 #     if created:
-#         # let op: id card will be change (ForeignKey)
 #         cart = Cart.objects.create(user=instance)

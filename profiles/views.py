@@ -19,3 +19,27 @@ from django.views import generic
 # class AccountInfo(LoginRequiredMixin,generic.View):
 #     def get(self,request):
 #         return render(request,'profiles/account_auth_user_details.html')
+#
+# class CheckOut(View):
+#     """
+#     collect user data for profile and final payment
+#     # looks like cart display but + shipping payment
+#     """
+#     def post(self,request):
+#         initial_data = {'email':request.user.email}
+#         form = BillingProfileForm(initial=initial_data)
+#         context = {'form':form}
+#         return render(request,'orders/checkout.html',context)
+    # form_class = BillingProfileForm
+    # success_url = '/'
+    # template_name = 'orders/checkout.html'
+    # def get_initial(self):
+    #     #initial= super().get_initial()
+    #     # initial['email'] = self.request.user.email
+    #     # return initial
+    #     print({'email':self.request.user.email})
+    #     return {'email':self.request.user.email}
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['email'] = self.request.user.email
+    #     return kwargs

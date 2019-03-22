@@ -63,19 +63,10 @@ class AddItemToCart(View):
 
 class CartItemsView(View):
     def get(self,request):
-        print("view cartitm calling")
-        context = {}
-        cart = Cart.objects.new_or_get(self.request,accepted=False)
-        print("из вью привет cart accepted:",cart.accepted)
+        cart = Cart.objects.new_or_get(request,accepted=False)
         items = cart.cart_items.all()
-        context['cart'] = cart
-        context['items'] = items
         qty = cart.get_sum_items_amount()
-        if isinstance(qty,int):
-            context['qty'] = qty
-        else:
-            context['qty'] = 0
-        return render(request,'prods/cart.html',context)
+        return render(request,'prods/cart.html',{'cart':cart,'items':items,'qty':qty})
 
 class RedirectToProduct(View):
     def get(self,request,pk):

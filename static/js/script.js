@@ -29,15 +29,11 @@ $(".need_auth").submit(function(e){
                 // if(next_ !=""){
                 //     window.location=next_
                 // }else{
-                var logEr =$("#er").html({{error_message}})
+                // need to correct var logEr =$("#er").html({{error_message}})
                 window.location = response.location
-
-
             })
             }
-
         );
-
 
 $('#minus').on('click',function(){
         //e.preventDefault();

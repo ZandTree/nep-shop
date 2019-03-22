@@ -3,6 +3,7 @@ from prods.models import Cart
 from bookstore.utils import make_unique_id
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from decimal import Decimal
 
 
 ORDER_STATUS_CHOICES = (
@@ -30,20 +31,21 @@ class Order(models.Model):
     # billing_address_final = models.TextField(blank=True,null=True)
     accepted = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True )
-    shipping_total = models.DecimalField(default=5.00,max_digits=100,decimal_places=2)
+    shipping_total = models.DecimalField(default=5.99,max_digits=100,decimal_places=2)
     total = models.DecimalField(default=0.00,max_digits=100,decimal_places=2)
 
 
     def __str__(self):
         return "This is an order {}".format(self.order_id)
 
-    def save(self,*args,**kwargs):
+    def update_total(self):
         """ generate price for each cart_item"""
-        self.total = self.cart.total + self.shipping_total
-        super().save(*args,**kwargs)
-    
-    def get_total(self):
-        return self.total
+        new_total = self.cart.total + Decimal(self.shipping_total)
+        format_new_total = format(new_total,".2f")
+        self.total = format_new_total
+        self.save()
+        return new_total
+
 
 
 def order_id_presave_receiver(sender, instance,*args,**kwargs):
