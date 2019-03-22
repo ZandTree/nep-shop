@@ -3,7 +3,7 @@
 {% block title %}list of orders{% endblock %}
 {% block content %}
 <div class="container">
-    <h3>Welcome by List of Orders</h3>
+    <h3 class="text-center">Welcome by List of Orders</h3>
     <table class="table table-striped">
   <thead>
     <tr>
@@ -12,6 +12,7 @@
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
       <th scope="col">Order Total</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,7 @@
       <td>{{order.status}}</td>
       <td>{{order.date}}</td>
       <td>$  {{order.total}}</td>
+      <td><button class="btn btn-danger btn-sm custom-danger-btn"><a href="#">Delete Order</a></button></td>
     </tr>
     {% endfor %}
     {% endif %}

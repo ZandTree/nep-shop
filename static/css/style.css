@@ -15,7 +15,15 @@ body {
         font-size: 100px;
         color: #FFC300;
      }
+.custom-danger-btn {
+    background-color: #eac38a;
+    border: 1px solid #371b11;
+    /* #e25e2f; */
 
+}
+.custom-danger-btn a{
+    color:black;
+}
 a {
 color: #b5401b;
 font-size: 1rem;
