@@ -14,8 +14,6 @@ $(".need_auth").submit(function(e){
          e.preventDefault();
          console.log('inside ajax submit');
          var url = $(this).attr('action');
-
-
          // var next_ = $(this).attr('data-next');
          // console.log("data-next is:",next_);
          var data = $(this).serialize();

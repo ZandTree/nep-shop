@@ -19,9 +19,12 @@ body {
     background-color: #eac38a;
     border: 1px solid #371b11;
     /* #e25e2f; */
-
 }
-.custom-danger-btn a{
+.custom-success-btn{
+    background-color: #338339;
+    border: 1px solid #371b11;
+}
+.custom-success-btn a,.custom-danger-btn a{
     color:black;
 }
 a {

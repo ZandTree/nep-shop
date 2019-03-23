@@ -1,32 +1,54 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
-{% block title %}list of orders{% endblock %}
+{% block title %}list of pre-orders{% endblock %}
 {% block content %}
 <div class="container">
-    <h3 class="text-center">Welcome by List of Orders</h3>
+    {% if orders %}
+    <h3 class="text-center">Welcome by List of Pre-Orders</h3>
     <table class="table table-striped">
   <thead>
     <tr>
+      <th scope="row">User</th>
       <th scope="col"># Id</th>
       <th scope="col"># Generic Id</th>
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
       <th scope="col">Order Total</th>
       <th scope="col">Delete</th>
+      <th scope="col">Afronden</th>
     </tr>
   </thead>
   <tbody>
-      {% if orders %}
+
       {% for order in orders %}
-    <tr>
-      <th scope="row">{{order.id}}</th>
-      <td>{{order.order_id}}</td>
-      <td>{{order.status}}</td>
-      <td>{{order.date}}</td>
-      <td>$  {{order.total}}</td>
-      <td><button class="btn btn-danger btn-sm custom-danger-btn"><a href="#">Delete Order</a></button></td>
+      <tr class="tab_row-{{order.cart.id}}" >
+      <td scope="row">cart_user: {{order.cart.id}}</td>
+      <td scope="row">{{order.id}}</td>
+      <td scope="row">{{order.order_id}}</td>
+      <td scope="row">{{order.status}}</td>
+      <td scope="row">{{order.date}}</td>
+      <td scope="row">$  {{order.total}}</td>
+      <td>
+          <form class="remove-order" data-id={{order.cart.id}} action="{% url 'orders:delete-order' %}"  method="post">
+              <!-- {% url 'orders:list-orders' -->
+              {% csrf_token %}
+            <input type="number" name="pk" value="{{order.id}}" hidden>
+            <input type="submit"  class="btn custom-danger-btn" value="Delete">
+          </form>
+          <!-- <a href="#">Delete Order</a> -->
+      </td>
+      <td>
+          <form class="afrond-order" action="#" method="post">
+              <!-- # check out ==> billing profile -->
+              {% csrf_token %}
+            <input type="number" name="pk" value="{{order.id}}" hidden>
+            <input type="submit"  class="btn custom-success-btn" value="Afronden">
+          </form>
+      </td>
     </tr>
     {% endfor %}
+    {% else %}
+    <h2>No Current Orders</h2>
     {% endif %}
 
   </tbody>

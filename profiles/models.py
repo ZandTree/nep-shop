@@ -17,6 +17,16 @@ class BillingProfile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+    first_name = models.CharField(max_length=120,default="")
+    last_name = models.CharField(max_length=120)
+    country = models.CharField(max_length=120)
+    state = models.CharField(max_length=120)
+    city = models.CharField(max_length=120)
+    district = models.CharField(max_length=120,default="")
+    street = models.CharField(max_length=120)
+    house_number = models.CharField(max_length=32)
+    postcode = models.CharField(max_length=16)
+    phone = models.CharField(max_length=32)
     create_account = models.BooleanField(default=False)
 
     def __str__(self):

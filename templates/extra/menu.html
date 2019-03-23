@@ -11,13 +11,23 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'prods:home' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                {% if user.is_authenticated %}
                 <li class="nav-item">
                        <a class="nav-link" href="">Hello,{{user}}</a>
                 </li>
-                <li class="nav-item">
-                       <a class="nav-link" href="#">Your Account</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Your Orders
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{% url 'orders:list-orders' %}">Pre-Orders</a>
+                          <a class="dropdown-item" href="#">Order History</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+
                    {% else %}
                 <li>
                        <a class="nav-link" href="">Hello,quest</a>
