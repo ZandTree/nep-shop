@@ -32,6 +32,9 @@ class BillingProfile(models.Model):
     def __str__(self):
         return self.email
 
+    def get_absolute_url(self):
+        return reverse('profiles:account-info', kwargs={'pk': self.user.id})
+
 def user_created_profile(sender,instance,created,*args,**kwargs):
     if created and instance.email:
         BillingProfile.objects.get_or_create(user=instance,email=instance.email)

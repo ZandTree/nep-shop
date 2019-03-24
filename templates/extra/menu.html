@@ -25,7 +25,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" id="profile" href="{% url 'profiles:account-info' user.id %}">Your Account</a>
                     </li>
 
                    {% else %}

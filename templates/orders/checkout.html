@@ -1,35 +1,24 @@
 {% extends 'prods/base.html'%}
 {% load staticfiles %}
+{% load bootstrap4 %}
 {% block title %}billing data{% endblock %}
 {% block content %}
-<div class="container-fluid">
-    <!-- place for billing form -->
-    <h1>Building billing form ....</h1>
-
-    {% if user.is_authenticated %}
+<div class="container-fluid my-3">
+    <h1>Billing Info Collecting</h1>
+    <p>Add info about the order...</p>
     <div class="row">
-        <div class="col-md-6 mx-auto">
-            <p>Case 1: user.is_authenticated...</p>
-            <form class="" action="" method="post">
-                {% csrf_token %}
-                {{form.as_p}}
-                <button type="submit">Save</button>
-
-            </form>
+        <div class="col-md-4">
+            <h3>Info about order with id: {{order.id}}</h3>
 
         </div>
+        <div class="col-md-6">
+            <form  action="{% url 'orders:checkout' %}" method="post">                    
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input class="btn custom-success-btn" type="submit" value="Save">
+            </form>
+        </div>
     </div>
-    {% else %}
-    <p>Case 2:user should choose: to auth (login\signup) or go as guest...</p>
-    <p>link to login\ signup</p>
-    <p>or </p>
-    <p>link to go as quest</p>
-
-
-
-    {% endif%}
-
-
 
 
 </div>

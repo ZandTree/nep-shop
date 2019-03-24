@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>Support</h4>
+        <p>Info for contact</p>
+        <p>Telefoon: 223322-223322</p>
+    </div>
+    <div class="col-md-8">
+        <h4>Account detail</h4>
+        <p>Info about account</p>
+        <!--  url 'profiles:profile-change' object.pk %} -->
+        <form class="" action="" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="submit" class="btn custom-success-btn"    value="Edit">
+        </form>
+        <p><a href="{% url 'account_change_password' %}">Change your password</a></p>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <h4>Hystory</h4>
+        <p>Info about Hx orders</p>
+    </div>
+</div>
+</div> <!--end div container-->
+
+{% endblock %}

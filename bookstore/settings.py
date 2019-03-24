@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'tags',
     'orders',
     'profiles',
+    'payments'
 ]
 
 MIDDLEWARE = [

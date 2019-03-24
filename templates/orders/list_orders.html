@@ -19,7 +19,6 @@
     </tr>
   </thead>
   <tbody>
-
       {% for order in orders %}
       <tr class="tab_row-{{order.cart.id}}" >
       <td scope="row">cart_user: {{order.cart.id}}</td>
@@ -35,15 +34,16 @@
             <input type="number" name="pk" value="{{order.id}}" hidden>
             <input type="submit"  class="btn custom-danger-btn" value="Delete">
           </form>
-          <!-- <a href="#">Delete Order</a> -->
+
       </td>
       <td>
-          <form class="afrond-order" action="#" method="post">
-              <!-- # check out ==> billing profile -->
+          <form action="{% url 'orders:final-order' %}"  method="post">
+              <!-- {% url 'orders:list-orders' -->
               {% csrf_token %}
             <input type="number" name="pk" value="{{order.id}}" hidden>
-            <input type="submit"  class="btn custom-success-btn" value="Afronden">
+            <input type="submit"  class="btn custom-success-btn" value="Go On">
           </form>
+
       </td>
     </tr>
     {% endfor %}

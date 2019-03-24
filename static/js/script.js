@@ -32,6 +32,22 @@ $(".need_auth").submit(function(e){
             })
             }
         );
+// $("#profile").on('click',function(e){
+//     e.preventDefault();
+//     url = $(this).attr('href');
+//     console.log(url);
+//     $.ajax({
+//         url:url,
+//         type:"GET",
+//         success:function(response){
+//             console.log("got response");
+//             console.log(response.location);
+//             window.location = response.location
+//         }
+//     })
+
+
+//})
 
 $('#minus').on('click',function(){
         //e.preventDefault();

@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
+from .forms import BillingProfileForm
+from .models import BillingProfile
 # from .models import Guest
 # from .forms import GuestForm
 # from django.views import generic
@@ -16,30 +18,20 @@ from django.views import generic
 #     def form_invalid(self,form):
 #         return redirect('profiles:register-guest')
 #
-# class AccountInfo(LoginRequiredMixin,generic.View):
-#     def get(self,request):
-#         return render(request,'profiles/account_auth_user_details.html')
-#
-# class CheckOut(View):
-#     """
-#     collect user data for profile and final payment
-#     # looks like cart display but + shipping payment
-#     """
-#     def post(self,request):
-#         initial_data = {'email':request.user.email}
-#         form = BillingProfileForm(initial=initial_data)
-#         context = {'form':form}
-#         return render(request,'orders/checkout.html',context)
-    # form_class = BillingProfileForm
-    # success_url = '/'
-    # template_name = 'orders/checkout.html'
-    # def get_initial(self):
-    #     #initial= super().get_initial()
-    #     # initial['email'] = self.request.user.email
-    #     # return initial
-    #     print({'email':self.request.user.email})
-    #     return {'email':self.request.user.email}
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['email'] = self.request.user.email
-    #     return kwargs
+class AccountInfo(LoginRequiredMixin,generic.DetailView,generic.UpdateView):
+    model = BillingProfile
+    form_class = BillingProfileForm
+    template_name = 'profiles/profile.html'
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        profile_id = BillingProfile.objects.get(user_id=pk)
+        return profile_id
+
+    def get_success_url(self):
+        """need to use request.user.id and not get_absolute_url"""
+        success_url = "/profiles/{}/".format(self.request.user.id)
+        return success_url
+
+    def dispatch(self,request,*args,**kwargs):
+        return super().dispatch(request,*args,**kwargs)
