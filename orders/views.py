@@ -28,9 +28,10 @@ class ListOrder(ListView):
     model = Order
     context_object_name = "orders"
     template_name = 'orders/list_orders.html'
+    ordering = ['-date']
 
     def get_queryset(self):
-        return  Order.objects.filter(accepted=False)
+        return  Order.objects.filter(cart__user = self.request.user,accepted=False)
 
 class DeleteOrder(View):
     """user can remove pre-order from list of orders"""
@@ -59,25 +60,35 @@ class Checkout(View):
         order_id = request.session.get('order_id',None)
         if order_id is not None:
             order_to_pay = get_object_or_404(Order,id=order_id,accepted=True)
-            #print(order_to_pay.id,'order_to_pay id')
-        # form with pre-filled data from from Profile model
         form = BillingProfileForm(
                 instance=BillingProfile.objects.get(user__email=request.user.email)
                 )
         return render(request,'orders/checkout.html',{'form':form,'order':order_to_pay})
 
-    def post(self,request):
-        """ save filled billing form  """
-        form = BillingProfileForm(request.POST)
-        if form.is_valid():
-            print("form is valid")
-            del request.session['order_id']
-            print('deleting session')
-            obj = form.save(commit=False)
-            print('updated form data')
-            obj.user = request.user
-            obj.save()
-            print('profile should be saved?')
-        else:
-            print('smth wrong with your form?')    
-        return redirect("/")
+    # def post(self,request):
+    #     """ save filled billing form  """
+    #     form = BillingProfileForm(request.POST)
+
+        # if form.is_valid():
+        #     print("nice form")
+        # else:
+        #     print("Oh-Oh")
+        # if form.is_valid():
+        #     print("form is valid")
+        #     del request.session['order_id']
+        #     print('deleting session')
+        #     obj = form.save(commit=False)
+        #     print('updated form data')
+        #     obj.user = request.user
+        #     obj.save()
+        #     print('profile should be saved?')
+        # else:
+        #     print('smth wrong with your form?')
+        #return redirect("/")
+class OrderHistory(ListView):
+    model = Order
+    template_name = 'orders/order-history.html'
+    ordering = ['-date']
+
+    def get_queryset(self):
+        return Order.objects.filter(cart__user = self.request.user,accepted=True)

@@ -32,6 +32,24 @@ $(".need_auth").submit(function(e){
             })
             }
         );
+
+$("#gopay").on('submit',function(e){
+    console.log('form submitted');
+    e.preventDefault();
+    var url = $(this).attr('action');
+    console.log('url',url);
+    $.ajax({
+        url:url,
+        type:"POST",
+        success:function(response){
+            console.log('got response');
+            window.location = "/payments/payment/"
+        }
+    })
+
+})
+
+
 // $("#profile").on('click',function(e){
 //     e.preventDefault();
 //     url = $(this).attr('href');

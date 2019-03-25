@@ -6,20 +6,28 @@
 <div class="container-fluid my-3">
     <h1>Billing Info Collecting</h1>
     <p>Add info about the order...</p>
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="row">
         <div class="col-md-4">
             <h3>Info about order with id: {{order.id}}</h3>
-
         </div>
         <div class="col-md-6">
-            <form  action="{% url 'orders:checkout' %}" method="post">                    
+            <form id="gopay" action="{% url 'profiles:profile-info' user.id %}" method="post">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                <input class="btn custom-success-btn" type="submit" value="Save">
+                 {% bootstrap_form form %}
+                <input type="submit" class="btn custom-success-btn"    value="Edit">
             </form>
         </div>
     </div>
-
-
 </div>
+
 {% endblock content%}

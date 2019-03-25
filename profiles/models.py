@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.urls import reverse
 
 # class Guest(models.Model):
 #     email = models.EmailField()
@@ -33,7 +34,7 @@ class BillingProfile(models.Model):
         return self.email
 
     def get_absolute_url(self):
-        return reverse('profiles:account-info', kwargs={'pk': self.user.id})
+        return reverse('profiles:profile-info', kwargs={'pk': self.user.id})
 
 def user_created_profile(sender,instance,created,*args,**kwargs):
     if created and instance.email:

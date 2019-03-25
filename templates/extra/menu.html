@@ -21,11 +21,17 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                           <a class="dropdown-item" href="{% url 'orders:list-orders' %}">Pre-Orders</a>
-                          <a class="dropdown-item" href="#">Order History</a>
+                          <a class="dropdown-item" href="{% url 'orders:history' %}">Order History</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="profile" href="{% url 'profiles:account-info' user.id %}">Your Account</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Your Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{% url 'profiles:profile-info' user.id %}">Profile</a>
+                          <a class="dropdown-item" href="{% url 'profiles:account-info' %}">Account Overview</a>
+                        </div>
                     </li>
 
                    {% else %}

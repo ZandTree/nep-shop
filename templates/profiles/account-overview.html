@@ -13,19 +13,29 @@
             </div>
         {% endfor %}
     {% endif %}
+
 <div class="row">
+    <div class="col-md-4">
+        <h4>Support</h4>
+        <p>Info for contact</p>
+        <p>Telefoon: 223322-223322</p>
+    </div>
     <div class="col-md-8">
-        <h4>Billing Profile</h4>
-        <p>Please update your billing profile</p>
-        <form class="" action="" method="post">
-            {% csrf_token %}
-             {% bootstrap_form form %}
-            <input type="submit" class="btn custom-success-btn"    value="Edit">
-        </form>
+        <h4>Account detail</h4>
+        <p>Info about account</p>
+        <p>Link to profile detail/edit</p>
+        <p>Delete account</p>
+        <!--  url 'profiles:profile-change' object.pk %} -->
+        <p><a href="{% url 'account_change_password' %}">Change your password</a></p>
     </div>
 </div>
 <hr>
-
+<div class="row">
+    <div class="col-md-12">
+        <h4>Hystory</h4>
+        <p>Info about Hx orders</p>
+    </div>
+</div>
 </div> <!--end div container-->
 
 {% endblock %}
