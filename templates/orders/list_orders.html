@@ -37,9 +37,9 @@
 
       </td>
       <td>
-          <form action="{% url 'orders:final-order' %}"  method="post">
+          <form action="{% url 'orders:checkout' %}"  method="get">
               <!-- {% url 'orders:list-orders' -->
-              {% csrf_token %}
+              <!-- {% csrf_token  -->
             <input type="number" name="pk" value="{{order.id}}" hidden>
             <input type="submit"  class="btn custom-success-btn" value="Go On">
           </form>

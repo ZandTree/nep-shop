@@ -30,42 +30,10 @@ $(".need_auth").submit(function(e){
                 // need to correct var logEr =$("#er").html({{error_message}})
                 window.location = response.location
             })
-            }
-        );
-
-$("#gopay").on('submit',function(e){
-    console.log('form submitted');
-    e.preventDefault();
-    var url = $(this).attr('action');
-    console.log('url',url);
-    $.ajax({
-        url:url,
-        type:"POST",
-        success:function(response){
-            console.log('got response');
-            window.location = "/payments/payment/"
         }
-    })
-
-})
+    );
 
 
-// $("#profile").on('click',function(e){
-//     e.preventDefault();
-//     url = $(this).attr('href');
-//     console.log(url);
-//     $.ajax({
-//         url:url,
-//         type:"GET",
-//         success:function(response){
-//             console.log("got response");
-//             console.log(response.location);
-//             window.location = response.location
-//         }
-//     })
-
-
-//})
 
 $('#minus').on('click',function(){
         //e.preventDefault();

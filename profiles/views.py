@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from .forms import BillingProfileForm
 from .models import BillingProfile
+from django.urls import reverse
 # from .models import Guest
 # from .forms import GuestForm
 # from django.views import generic
@@ -19,22 +20,28 @@ from .models import BillingProfile
 #         return redirect('profiles:register-guest')
 #
 class ProfileInfo(LoginRequiredMixin,generic.DetailView,generic.UpdateView):
-    model = BillingProfile
+    # model = BillingProfile
     form_class = BillingProfileForm
     template_name = 'profiles/profile.html'
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        profile_id = BillingProfile.objects.get(user_id=pk)
+        return profile_id
+
+    def dispatch(self,request,*args,**kwargs):
+        return super().dispatch(request,*args,**kwargs)
+
+class AdjustProfile(generic.UpdateView):
+    form_class = BillingProfileForm
+    template_name = 'profiles/adjust_profile.html'
 
     def get_object(self):
         pk = self.kwargs.get('pk')
         profile_id = BillingProfile.objects.get(user_id=pk)
         return profile_id
 
-    # def get_success_url(self):
-    #     """need to use request.user.id and not get_absolute_url"""
-    #     success_url = "/profiles/{}/".format(self.request.user.id)
-    #     return success_url
-
-    def dispatch(self,request,*args,**kwargs):
-        return super().dispatch(request,*args,**kwargs)
+    def get_success_url(self):
+        return reverse('payments:pay')
 
 class AccountOverview(generic.TemplateView):
     template_name = 'profiles/account-overview.html'

@@ -17,16 +17,22 @@
         {% endfor %}
     {% endif %}
     <div class="row">
+        {% if order %}
         <div class="col-md-4">
             <h3>Info about order with id: {{order.id}}</h3>
         </div>
         <div class="col-md-6">
-            <form id="gopay" action="{% url 'profiles:profile-info' user.id %}" method="post">
+            <!-- for ajax id="gopay"  -->
+            <form action="{% url 'profiles:adjust-profile' user.id %}" method="post">
                 {% csrf_token %}
                  {% bootstrap_form form %}
                 <input type="submit" class="btn custom-success-btn"    value="Edit">
             </form>
         </div>
+        {% else %}
+        <h1>Noop</h1>
+        {% endif %}
+
     </div>
 </div>
 

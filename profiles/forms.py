@@ -4,13 +4,9 @@ from profiles.models import BillingProfile
 class BillingProfileForm(forms.ModelForm):
     first_name = forms.CharField(required=False)
     district = forms.CharField(required=False)
-    #email = forms.EmailField(initial={{user.email}})
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['email'].label="Your email"
-        # self.email = kwargs.pop("email")
-        # print(self.email)
-        # self.fields['email']=kwargs.pop("email")
         self.fields['first_name'].label = 'First Name'
         self.fields['first_name'].help_text = 'Not required'
         self.fields['district'].label = 'District/Provintie/Regio'

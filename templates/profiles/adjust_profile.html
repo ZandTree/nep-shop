@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="container">
+    {% if messages %}
+        {% for msg in messages %}
+            <div class="alert alert-info" role="alert">
+                <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+                </button>
+                <p>{{msg}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+<div class="row">
+    <div class="col-md-8">
+        <h4>Billing Profile</h4>
+        <p>Please update your billing profile</p>
+        <form action="{% url 'profiles:adjust-profile' user.id %}" method="post">
+            {% csrf_token %}
+             {% bootstrap_form form %}
+            <input type="submit" class="btn custom-success-btn"    value="Fill In Profile">
+        </form>
+    </div>
+</div>
+<hr>
+
+</div> <!--end div container-->
+{% endblock %}
