@@ -10,8 +10,9 @@ def payment_notification(sender,**kwargs):
     if ipn_obj.payment_status == "Completed": #ST_PP_COMPLETED:
         # payment successful
         order = get_object_or_404(Order,id=ipn_obj.invoice)
+        if order.total == ipn.mc_gross:
         #mark the order as paid
-        order.status = "paid"
-        order.save()
+            order.status = "paid"
+            order.save()
     else:
         print("Hm....Smth went wrong")

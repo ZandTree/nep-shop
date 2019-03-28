@@ -7,15 +7,15 @@ class CustomMPTTModelAdmin(MPTTModelAdmin):
 # from Miele book
 # meaning:using ModelInLine for the CartItem model(child model) ==> to include
 # if as en inline in the CartAdmin (parent modle)
-# class CartItemInLine(admin.TabularInline):
-#     model = CartItem
-#     raw_id_fields = ['product']
+class CartItemInLine(admin.TabularInline):
+    model = CartItem
+    raw_id_fields = ['product']
 #vs my owns
 class CartAdmin(admin.ModelAdmin):
     list_display=['id','user','accepted','total']
     list_filter = []
     #added from Miele
-    #inlines = [CartItemInLine]
+    inlines = [CartItemInLine]
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title','slug']
@@ -24,4 +24,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Category, CustomMPTTModelAdmin)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Cart,CartAdmin)
-admin.site.register(CartItem) #+CartAdmin
+admin.site.register(CartItem)#,CartItemInLine)

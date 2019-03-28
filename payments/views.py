@@ -22,7 +22,7 @@ class Payment(View):
             'business':settings.PAYPAL_RECEIVER_EMAIL,
             'amount' :'%.2f'%order.total.quantize(Decimal('.01')),
             'item_name':'Order {}'.format(order.order_id),
-            'invoice':str(order.id),
+            'invoice':str(order.id),#id will be used later in signal
             'currency_code':'EUR', #USD',
             'notify_url':'http://{}{}'.format(host,reverse('paypal-ipn')),
             'return_url':'http://{}{}'.format(host,reverse('payments:done')),
