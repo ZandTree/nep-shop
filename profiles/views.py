@@ -19,8 +19,7 @@ from django.urls import reverse
 #     def form_invalid(self,form):
 #         return redirect('profiles:register-guest')
 #
-class ProfileInfo(LoginRequiredMixin,generic.DetailView,generic.UpdateView):
-    # model = BillingProfile
+class ProfileInfo(LoginRequiredMixin,generic.UpdateView,generic.DetailView):
     form_class = BillingProfileForm
     template_name = 'profiles/profile.html'
     def get_object(self):
@@ -28,18 +27,15 @@ class ProfileInfo(LoginRequiredMixin,generic.DetailView,generic.UpdateView):
         profile_id = BillingProfile.objects.get(user_id=pk)
         return profile_id
 
-    def dispatch(self,request,*args,**kwargs):
-        return super().dispatch(request,*args,**kwargs)
 
 class AdjustProfile(generic.UpdateView):
+    """"""
     form_class = BillingProfileForm
     template_name = 'profiles/adjust_profile.html'
-
     def get_object(self):
         pk = self.kwargs.get('pk')
         profile_id = BillingProfile.objects.get(user_id=pk)
         return profile_id
-
     def get_success_url(self):
         return reverse('payments:pay')
 

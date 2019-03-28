@@ -1,6 +1,6 @@
 #profiles/forms.py
-from django import forms
-#
+
+#django-paypal-1.0.0
 # class GuestForm(forms.ModelForm):
 #     class Meta:
 #         fields = ['email',]
@@ -64,3 +64,34 @@ from django import forms
 #     </td>
 # </tr>
 # {% endif %}
+
+# qs from palypal
+# mc_gross=7.98
+# &invoice=82&
+# protection_eligibility=Eligible
+# &payer_id=VFE8EA6D55VHA
+# &payment_date=05%3A08%3A46+Mar+28%2C+2019+PDT
+# &payment_status=Completed&charset=windows-1252
+# &first_name=Tatjana
+# &mc_fee=0.62
+# &notify_version=3.9
+# &custom=&payer_status=unverified
+# &business=verkoper%40mail.com
+# &quantity=1
+# &verify_sign=A1fAO792yrQ6XB8vat4o8M7yIMCJAP2htM-HY-GzQGrqBpXgRy0j1KrY
+# &payer_email=foofoo%40mail.com
+# &txn_id=8NU45729BT610443A
+# &payment_type=instant
+# &last_name=Rietveldt
+# &receiver_email=verkoper%40mail.com
+# &payment_fee=&shipping_discount=0.00
+# &receiver_id=KUL4LH5PFWQEE&insurance_amount=0.00
+# &txn_type=web_accept&item_name=Order+ABCBMF&discount=0.00
+# &mc_currency=EUR
+# &item_number=
+# &residence_country=NL
+# &test_ipn=1
+# &shipping_method=Default
+# &transaction_subject=
+# &payment_gross=
+# &ipn_track_id=778575132ce6f

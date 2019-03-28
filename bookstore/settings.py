@@ -25,7 +25,8 @@ SECRET_KEY = 'az2%2a#1&%-gih^543upq-^)x2^#f#-pyq9eu)vq&l#-!^2%j='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','58a4d6bf.ngrok.io']
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'paypal.standard.ipn',
     # custom apps
     'prods',
     'search',
@@ -91,6 +93,9 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'bookstore.wsgi.application'
 
 SITE_ID = 1
+#paypal settings
+PAYPAL_RECEIVER_EMAIL = 'verkoper@mail.com'   #os.environ.get("MY_EMAIL")
+PAYPAL_TEST = True
 
 DATABASES = {
     'default': {
