@@ -25,7 +25,7 @@ SECRET_KEY = 'az2%2a#1&%-gih^543upq-^)x2^#f#-pyq9eu)vq&l#-!^2%j='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','58a4d6bf.ngrok.io']
+ALLOWED_HOSTS = ['*']   #,'58a4d6bf.ngrok.io']
 # ALLOWED_HOSTS = ['*']
 
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'paypal.standard.ipn',
+    'wkhtmltopdf',
     # custom apps
     'prods',
     'search',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'profiles',
     'payments'
 ]
+WKHTMLTOPDF_CMD = 'C:/Users/tanja/Desktop/newDjango/venv/Lib/site-packages'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -156,7 +158,8 @@ EMAIL_USE_TLS = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
+#STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
+STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')

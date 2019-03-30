@@ -6,17 +6,20 @@ from django.http import HttpResponse
 # creating generic admin ==> should be before OrderAdmin
 def export_to_csv(modeladmin,request,queryset):
     opts = modeladmin.model._meta
-    print(opts)
+    #print(opts)
+    # MIME type = 'text/csv' not html
     response = HttpResponse(content_type='text/csv')
-    # wait for an attachment
+    # header Content-Disposition ==> wait for an attachment
+    # will be in "save as"
     response['Content-Disposition'] = 'attachment; \
         filename = {}.csv'.format(opts.verbose_name)
+    # .writer() expects args=file-like aka response
     writer = csv.writer(response)
     # exclude m2m and one2m relations
     fields = [field for field in opts.get_fields() if not field.many_to_many and
             not field.one_to_many
         ]
-    #write first row with header info
+    #write first row: headers
     writer.writerow([field.verbose_name for field in fields])
     #write data rows
     for obj in queryset:

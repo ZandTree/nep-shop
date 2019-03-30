@@ -1,12 +1,19 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import View,ListView   #FormView
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from prods.models import Cart
 from .models import Order
 from django.db.models import Sum
 from profiles.models import BillingProfile
 from profiles.forms import BillingProfileForm
+from wkhtmltopdf.views import PDFTemplateView
 
+class MyPDF(PDFTemplateView):
+    filename = 'my_pdf.pdf'
+    template_name = 'orders/pdf.html'
+    cmd_options = {
+        'margin-top': 3,
+    }
 
 class ListOrder(ListView):
     """list of all pre-orders(based on accepted carts) but not paid yet"""
