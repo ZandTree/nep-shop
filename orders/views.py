@@ -6,14 +6,21 @@ from .models import Order
 from django.db.models import Sum
 from profiles.models import BillingProfile
 from profiles.forms import BillingProfileForm
-from wkhtmltopdf.views import PDFTemplateView
-
-class MyPDF(PDFTemplateView):
-    filename = 'my_pdf.pdf'
-    template_name = 'orders/pdf.html'
-    cmd_options = {
-        'margin-top': 3,
-    }
+# module for generation PDF
+#from wkhtmltopdf.views import PDFTemplateView
+#
+# class MyPDF(PDFTemplateView):
+#     filename = 'my_pdf.pdf'
+#     template_name = 'orders/pdf.html'
+#     cmd_options = {
+#         'margin-top': 3,
+#     }
+def admin_order_detail(request,pk):
+    order = get_object_or_404(Order, id=pk)
+    cart = Cart.objects.get(order=order,accepted=True)
+    cart_items = cart.cart_items.all()
+    return render(request, 'admin/orders/order/detail.html',
+            {'order': order,'cart':cart,'items':cart_items})
 
 class ListOrder(ListView):
     """list of all pre-orders(based on accepted carts) but not paid yet"""
@@ -46,10 +53,12 @@ class CreateOrder(View):
     create a new one triggered by cart status => accepted False
     """
     # ? def get(in case user stops)
-
     def post(self,request):
         pk_cart = request.POST.get('pk','pk not found')
+        print(pk_cart)
         cart = Cart.objects.get(id=pk_cart,accepted=False)
+        # cart = Cart.objects.get(id=143,accepted=False)
+        print(cart.id)
         order = Order.objects.create(cart=cart) # per default accepted=False)
         order.update_total()
         print("inside create order..created new one with id:",order.id)

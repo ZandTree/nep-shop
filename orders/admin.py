@@ -1,9 +1,13 @@
 from django.contrib import admin
+from django.urls import reverse
 from .models import Order
 import csv
 import datetime
 from django.http import HttpResponse
+from django.utils.safestring import mark_safe
+
 # creating generic admin ==> should be before OrderAdmin
+
 def export_to_csv(modeladmin,request,queryset):
     opts = modeladmin.model._meta
     #print(opts)
@@ -33,8 +37,13 @@ def export_to_csv(modeladmin,request,queryset):
     return response
 export_to_csv.short_description = 'Export to CSV'
 
+# custom admin
+def order_detail(obj):
+    return mark_safe('<a href="{}">View</a>'.format(reverse('orders:admin_order_detail', args=[obj.id])))
+#order_detail.allow_tags = True
+
 class OrderAdmin(admin.ModelAdmin):
-    list_display =['id','order_id','status','cart','accepted','date','total']
+    list_display =['id','order_id',order_detail,'status','cart','accepted','date','total']
     list_filter = ['status']
     actions = [export_to_csv]
     #inlines = [] test if child model exist to include on the same page

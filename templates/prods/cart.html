@@ -178,11 +178,10 @@
 <script type="text/javascript">
     var proceed = $("#proceed");
     var showAuth = $(".show-auth");
-    $(".showAuth").on('sub,it',function(e){
+    $(".showAuth").on('submit',function(e){
         console.log("smb wants to login-signup=> but clicked");
         e.preventDefault();
         url = $(this).attr('href');
-        console.log("should be send to url",url);
         $.ajax({
             url:url,
             type:"POST",

@@ -13,7 +13,10 @@ from django.urls import reverse
 #         return self.email
 
 class BillingProfile(models.Model):
-    user = models.OneToOneField(User,blank=True,null=True,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,blank=True,
+                null=True,on_delete=models.CASCADE,
+                related_name="profile"
+                )
     email = models.EmailField(unique=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -12,6 +12,10 @@ body {
     color: #333;
     background: #fff;
 }
+/* custom style in admin */
+#ord-admin {
+    margin-top: 1rem;
+}
 
 /* LINKS */
 
