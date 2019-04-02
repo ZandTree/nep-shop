@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block title %}payment stripe{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col col-md-6">
+            <h2>Pay with credit card</h2>
+            <form class="" action="{% url 'payments:stripe_charge' %}" method="post">
+                {% csrf_token %}
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{ key }}"
+                    data-description="Pay Now"
+                    data-amount="{{order.total}}"
+                    data-locale="auto">
+                </script>
+            </form>
+        </div>
+    </div>
+    <hr>
+{% endblock content%}
+
+{% block js %}
+{% endblock js %}

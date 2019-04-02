@@ -22,13 +22,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('prods.urls',namespace='prods')),
+    path('',include('prods.urls',)),
     path('paypal/',include('paypal.standard.ipn.urls')),
     path('accounts/', include('allauth.urls')),
-    path('search/',include('search.urls',namespace='search')),
-    path('orders/',include('orders.urls',namespace='ord')),
-    path('payments/',include('payments.urls',namespace='pay')),
-    path('profiles/',include('profiles.urls',namespace='profiles')),
+    path('search/',include('search.urls',)),
+    path('orders/',include('orders.urls',)),
+    path('payments/',include('payments.urls',)),
+    path('profiles/',include('profiles.urls',)),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

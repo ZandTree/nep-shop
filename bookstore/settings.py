@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'tags',
     'orders',
     'profiles',
-    'payments'
+    'payments',
+    'stripe'
 ]
 WKHTMLTOPDF_CMD = 'C:/Users/tanja/Desktop/newDjango/venv/Lib/site-packages'
 
@@ -163,6 +164,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_mSDotOmmYb8ZFsGhuKMpQ6pP00RndNmKhE'
+SRTIPE_SECRET_KEY = 'sk_test_8OQC6fpPfsxSrSgYswKiV98s00NOQGxnQ5'
+
 #
 # try:
 #     from .local_settings import *

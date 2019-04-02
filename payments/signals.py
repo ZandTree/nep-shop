@@ -7,7 +7,7 @@ from django.dispatch import receiver
 @receiver(valid_ipn_received)
 def payment_notification(sender,**kwargs):
     ipn_obj = sender
-    if ipn_obj.payment_status == "Completed": #ST_PP_COMPLETED:
+    if ipn_obj.payment_status == ST_PP_COMPLETED: #"Completed": #
         # payment successful
         order = get_object_or_404(Order,id=ipn_obj.invoice)
         if order.total == ipn_obj.mc_gross:

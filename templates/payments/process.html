@@ -7,31 +7,17 @@
     <h1>Finally payment</h1>
     <div class="row">
         <div class="col col-md-6">
-            <h4>Place for button from yesterday</h4>
-            <p>Pay with PayPal</p>
+            <h4>Pay with PayPal</h4>
                 {{form.render}}
             <p>end of book button</p>
         </div>
-        <!-- <div class="col col-md-6">
-            <p>Pay with credit card</p>
-        </div>
+        <div class="col col-md-6">
+            <h2><a href="{% url 'payments:start_stripe' %}">Pay with credit card</a></h2>
 
+        </div>
     </div>
     <hr>
-    <div class="row">
-        <h4>New button based on docs</h4>
-        <br>
-        <br>
-        <div id="paypal-button-container"></div>
- -->
-
 {% endblock content%}
-{% block js %}
-<!-- <script src="https://www.paypal.com/sdk/js?client-id=AUs-GWKou9T7pCZ7wrhQyj9rvU_udqaQW0vY1H19MFl47pbTvuAdNTJFHUQOl9m1gEfKW4HZuYz5fG7T"></script>
-<script>paypal.Buttons().render('#paypal-button-container');</script> -->
 
+{% block js %}
 {% endblock js %}
-<!--
-curl -v -X GET https://api.sandbox.paypal.com/v1/invoicing/invoices?page=3&page_size=4&total_count_required=true \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer A21AAGnJ5lur7z_CD5tZmL_usdt6NSL9JjAxF6qZ-ZsZ9RtUGzZF5Rba7N10Dl8MuCqSrFqIiKSdth3Z0_L7r3GZ3B7pkA75g" -->

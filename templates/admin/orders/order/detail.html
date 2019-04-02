@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 {% for item in items %}
-                <tr class="row"> <!--cycle "1" "2"-->
+                <tr class="row"> {#{% cycle '1' '2' %}"#}
                     <td>{{item.product}}</td>
                     <td class="num">$ {{item.product.price}}</td>
                     <td class="num">{{item.qty}} </td>
