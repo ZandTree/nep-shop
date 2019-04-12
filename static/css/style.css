@@ -14,7 +14,8 @@ body {
 .node {
     position: absolute;
     display: none;
-    background-color: #eeeae8;
+    background-color: red;
+    /* #eeeae8; */
     /* #fff; */
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .30);
@@ -30,6 +31,7 @@ body {
     display: none;
     float: left;
     min-width: 10rem;
+    /* not less than width 100% otherwise cildren not reachable */
     width: 100%;
     padding: .5rem 0;
     margin: .125rem 0 0;
@@ -42,10 +44,13 @@ body {
 
 .category-drop {
     width: 100px;
+    border-radius: 0.50rem;
 }
 
 .category-drop:hover .node, .a-node {
     display: block;
+
+
     /* makes sidebar items with this background
     background-color: #eeeae8; */
 }
@@ -54,12 +59,13 @@ body {
     display: none;
     position: absolute;
     z-index: 1001;
-    margin: -35px 0 0 0;
+    margin: -45px 0 0 0;
     left: 100%;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
+    border-radius: 0.50rem;
+    /* .25rem; */
 }
 
 .a-node:hover .a-child {
@@ -226,7 +232,8 @@ h1, h2, h3, h4, h5, h6, figure {
 #colorlib-hero .flexslider .flex-control-nav li a.flex-active {
     cursor: pointer;
     background: transparent;
-    background: #FFC300;
+    background:#FFC300;
+    /* #ecbc72 */
 }
 
 #colorlib-hero .flexslider .flex-direction-nav {

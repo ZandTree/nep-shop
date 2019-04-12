@@ -76,6 +76,8 @@ class Product(models.Model):
         return self.title
     def get_absolute_url(self,**kwargs):
         return reverse('prods:detail',kwargs={'slug':self.slug})
+    class Meta:
+        ordering = ['id']
 
     @property
     def get_photo_url(self,*args,**kwargs):
@@ -101,7 +103,7 @@ class CartManager(models.Manager):
         """ return cart object for either anonymnus user,or authenticated user"""
         cart_id = request.session.get('cart_id',None)
         qs = Cart.objects.filter(id=cart_id,accepted =False)
-        print(qs.count())
+        #print(qs.count())
         # look for existing cart through session cart_id
         if qs.count() == 1:
             cart_obj = qs.last()
@@ -162,6 +164,7 @@ class Cart(models.Model):
         """
         total_price = self.cart_items.aggregate(total_price=Sum('sub_total'))
         price = total_price.get('total_price')
+        self.total = price
         return price
 
     def get_sum_items_amount(self):

@@ -22,7 +22,7 @@ def admin_order_detail(request,pk):
     return render(request, 'admin/orders/order/detail.html',
             {'order': order,'cart':cart,'items':cart_items})
 
-class ListOrder(ListView):
+class ListPreOrder(ListView):
     """list of all pre-orders(based on accepted carts) but not paid yet"""
     model = Order
     context_object_name = "orders"
@@ -41,7 +41,7 @@ class OrderHistory(ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         context['accepted_not_paid_yet_orders'] = Order.objects.filter(cart__user =            self.request.user,accepted=True).exclude(status='paid').order_by('-date')
-        
+
         return context
 
 class DeleteOrder(View):
@@ -58,18 +58,18 @@ class CreateOrder(View):
     """
     Display existing order or
     create a new one triggered by cart status => accepted False
+    Final update cart total(excl shipping)
     """
     # ? def get(in case user stops)
     def post(self,request):
         pk_cart = request.POST.get('pk','pk not found')
-        print(pk_cart)
+
         cart = Cart.objects.get(id=pk_cart,accepted=False)
-        # cart = Cart.objects.get(id=143,accepted=False)
-        print(cart.id)
+        # final update cart attr total
+        cart.get_sum_items_price()
         order = Order.objects.create(cart=cart) # per default accepted=False)
+        # calc cart.total + shipping cost
         order.update_total()
-        print("inside create order..created new one with id:",order.id)
-        print("inside create order..and accepted :",order.accepted)
         cart.accepted = True
         cart.save()
         new_cart = Cart.objects.create(user=request.user)

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block title %}list of pre-orders{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container-fluid">
     {% if orders %}
     <h3 class="text-center">Welcome by List of Pre-Orders</h3>
     <table class="table table-striped">
@@ -13,7 +13,9 @@
       <th scope="col"># Generic Id</th>
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
-      <th scope="col">Order Total</th>
+      <th scope="col">Order Total(exl shipping)</th>
+      <th scope="col">Shipping cost</th>
+      <th scope="col">Order Total(incl shipping)</th>
       <th scope="col">Delete</th>
       <th scope="col">Afronden</th>
     </tr>
@@ -26,7 +28,9 @@
       <td scope="row">{{order.order_id}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
-      <td scope="row">$  {{order.total}}</td>
+      <td scope="row">$ {{order.cart.total}} </td>
+      <td scope="row">$ {{order.shipping_total}}</td>
+      <td scope="row">$ {{order.total}}</td>
       <td>
           <form class="remove-order" data-id={{order.cart.id}} action="{% url 'orders:delete-order' %}"  method="post">
               <!-- {% url 'orders:list-orders' -->

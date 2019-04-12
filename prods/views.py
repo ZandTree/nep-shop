@@ -17,6 +17,7 @@ class ProdList(ListView):
     template_name = 'prods/index.html'
     paginate_by = 6
 
+
 class CategoryProductsList(ListView):
     """
     List of products based on category
@@ -44,6 +45,7 @@ class ProdDetail(DetailView):
         form = CartItemForm()
         context['form'] = form
         return context
+
 
 class AddItemToCart(View):
     """

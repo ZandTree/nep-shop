@@ -82,17 +82,16 @@
                             </td>
                     </tr>
                     {% else %}
+                    <tr>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td>To Make an Order You Need to LogIn or SignUp</td>
+                        <td class="text-center"><a href="/accounts/signup/">SignUp</a></td>
+                        <td class="text-center"><a href="/accounts/login/">Log In</a></td>
+                    </tr>
                     <tr id="show-auth">
                     <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td>To Make an Order You Need to LogIn or SignUp</td>
                     <td class="text-center">
-                        <form action="#" method="post">
-                            {% csrf_token%}
-                            <button class="btn btn-success">
-                                Go as quest
-                            </button>
-                        </form>
-                    </td>
-                        <td class="text-center">
                             <form class="showAuth" action="{% url 'account_login' %}" method="post">
                                 {% csrf_token%}
                                 <button class="btn btn-success">
@@ -100,6 +99,7 @@
                                 </button>
                             </form>
                         </td>
+
                         <td class="text-center">
                         <form class="showAuth" action="{% url 'account_signup' %}" method="post">
                             {% csrf_token%}
