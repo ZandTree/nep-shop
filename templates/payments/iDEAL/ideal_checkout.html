@@ -1,12 +1,10 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
-{% block title %}charge stripe{% endblock %}
+{% block title %}payment iDeal{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col col-md-6">
-            <h2>Thanks for your payment</h2>            
-        </div>
+        <h3>Notification: status of your order is {{msg}}</h3>
     </div>
     <hr>
 {% endblock content%}

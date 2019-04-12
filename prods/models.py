@@ -34,13 +34,18 @@ def upload_img_file(instance,filepath):
     shorten filename and pack into folder with title + id
     let op: splitext returns already period='.ext'
     """
+    print("loading a file",instance.id)
     filename = os.path.basename(filepath)         # 'abababa.jpeg'
     name,ext = os.path.splitext(filename)         # tuple ('abababa', '.jpeg')
     if len(name) > 5:
         name = name[:5]
     new_file_name = name + ext
     # to correct os.path.join('prod_{0}','{1}').format(instance.id,new_file_name)
-    return os.path.join('image','prod_{0}','{1}').format(instance.id,new_file_name)
+    if instance.id:
+        return os.path.join('image','prod_{0}','{1}').format(instance.id,new_file_name)
+    else:
+        return os.path.join('image','prods_load','{}').format(new_file_name)
+    #C:\Users\tanja\Desktop\newDjango\bookstore\media\image\prod_None\doekj.jpg
 
 class ProductManager(models.Manager):
     def search(self,word):
@@ -85,9 +90,11 @@ class Product(models.Model):
         super().save(*args,**kwargs)
         if self.photo:
             img = Image.open(self.photo.path)
+            print(self.photo.path)
             output_size = (253,380)
             img.thumbnail(output_size)
             img.save(self.photo.path)
+
 
 class CartManager(models.Manager):
     def new_or_get(self,request,accepted=False):
@@ -136,6 +143,7 @@ class Cart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
     accepted = models.BooleanField(default=False)
+    # ??? why total
     total = models.DecimalField(decimal_places=2,
                         max_digits=10000000,
                         default = 0.00,

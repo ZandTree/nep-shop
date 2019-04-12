@@ -65,7 +65,7 @@
                     <tr>
                         <td></td><td></td><td></td><td></td><td></td><td><td></td>
                         <td class="text-center" id="totalItemsInCart">Items In Total: {{qty}}</td>
-                        <td class="text-center" id="totalPriceCart">Total Price (shipping excl) S {{cart.total}}</td>
+                        <td class="text-center" id="totalPriceCart">Total Price (shipping excl) $ {{total_cart}}</td>
                     </tr>
                     <tr id="show-proceed">
                     {% if user.is_authenticated%}
@@ -132,8 +132,8 @@
                 data:$(this).serialize(),
                 type:$(this).attr("method"),
                 success:function(response){
-                    totalPriceCart.html(response.cartTotalPrice),
-                    totalItemsInCart.html(response.totalItemsInCart),
+                    totalPriceCart.text('Total Price (shipping excl): ' + response.cartTotalPrice ),
+                    totalItemsInCart.text('Items In Total: '+ response.totalItemsInCart),
                     $(".itemSubTotal-"+ dataAttr).html(response.itemSubTotal),
                     cart_total.html(response.totalItemsInCart)
 
@@ -160,8 +160,8 @@
             success:function(response){
                 //console.log('greet from delete')
                 $(".on-move-"+ removeId).css('display','none')
-                totalPriceCart.html(response.cartTotalPrice)
-                totalItemsInCart.html(response.totalItemsInCart)
+                totalPriceCart.text('Total Price (shipping excl): '+ response.cartTotalPrice)
+                totalItemsInCart.text('Items In Total: '+ response.totalItemsInCart)
                 cart_total.html(response.totalItemsInCart)
                 if(parseInt(response.totalItemsInCart)==0){
                     hideTable.css('display','none'),

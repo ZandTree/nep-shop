@@ -28,7 +28,8 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True )
     shipping_total = models.DecimalField(default=5.99,max_digits=100,decimal_places=2)
     total = models.DecimalField(default=0.00,max_digits=100,decimal_places=2)
-    
+    payIdeal_id = models.CharField(max_length=30,blank=True,null=True)
+
     def __str__(self):
         return "This is an order {}".format(self.order_id)
 

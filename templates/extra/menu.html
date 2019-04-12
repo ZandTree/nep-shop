@@ -39,21 +39,7 @@
                        <a class="nav-link" href="">Hello,quest</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                   <a class="nav-link" href="">Kill session</a>
-                </li>
-                <!-- <ul class="root"> -->
-                    <!-- {#{ recursetree menu_categories }
-                        <li class="dropdown-item">
-                            <a href="{ url 'shop:category' slug=node.slug %}">{{ node.name }}</a>
-                            {% if not node.is_leaf_node %}
-                                <ul class="children">
-                                    <a href="#">{{ children }}</a>
-                                </ul>
-                            {% endif %}
-                        </li>
-                    { endrecursetree %}#}  -->
-                <!-- </ul>    -->
+
             </ul>
 
             <ul class="navbar-nav">
@@ -65,7 +51,7 @@
                        <a class="nav-link" href="/accounts/logout/">Log Out</a>
                 </li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LogIn\SignUp</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LogIn\SignUp</a></li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_login' %}">Log In</a>
                 </li>

@@ -11,15 +11,29 @@ from .forms import *
 from django.contrib import messages
 from django.db.models import Sum
 
-# class KillSession(View):
-#     def get(self,request):
-#         del request.session['cart_id']
-#         return redirect('/')
-#
 class ProdList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'prods/index.html'
+    paginate_by = 6
+
+class CategoryProductsList(ListView):
+    """
+    List of products based on category
+    """
+    template_name = 'prods/index.html'
+    context_object_name = 'products'
+    paginate_by = 6
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        node = Category.objects.get(slug=slug)
+        if Product.objects.filter(categ__slug=slug).exists():
+            products = Product.objects.filter(categ__slug=slug)
+        else:
+            # display all produs from (root start)
+            products = Product.objects.filter(categ__slug__in=[x.slug for x in node.get_family()])
+        return products
+
 
 class ProdDetail(DetailView):
     model = Product
@@ -32,6 +46,9 @@ class ProdDetail(DetailView):
         return context
 
 class AddItemToCart(View):
+    """
+    add item if it doesn't exist in the cart; otherwise reports warning
+    """
     def get(self,request,slug,pk):
         #del request.session['cart_id']
         cart = Cart.objects.new_or_get(request)
@@ -52,13 +69,9 @@ class AddItemToCart(View):
                 qty = 1
                 )
             #messages.success(request, 'New item added to your cart.')
-        total_qty = cart.cart_items.aggregate(total=Sum('qty'))
-        num_items = total_qty.get('total')
-        total_price = cart.cart_items.aggregate(total_price=Sum('sub_total'))
-        price = total_price.get('total_price')
-        cart.total = price
-        cart.save()
-        return JsonResponse({"flag":flag,"numItems":num_items,"price":price})
+        # below calc for menu bar
+        num_items = cart.get_sum_items_amount()
+        return JsonResponse({"flag":flag,"numItems":num_items}) #,"price":price})
         #return redirect("/detail/{}/".format(slug))
 
 class CartItemsView(View):
@@ -66,7 +79,9 @@ class CartItemsView(View):
         cart = Cart.objects.new_or_get(request,accepted=False)
         items = cart.cart_items.all()
         qty = cart.get_sum_items_amount()
-        return render(request,'prods/cart.html',{'cart':cart,'items':items,'qty':qty})
+        total_cart = cart.get_sum_items_price()
+        return render(request,'prods/cart.html',
+                {'cart':cart,'items':items,'qty':qty,'total_cart':total_cart})
 
 class RedirectToProduct(View):
     def get(self,request,pk):
@@ -95,8 +110,8 @@ class EditCart(View):
         item_sub_total = item.sub_total
         num_items_cart = cart.get_sum_items_amount()
         price = cart.get_sum_items_price()
-        cart.total = price
-        cart.save()
+        # cart.total = price
+        # cart.save()
         #return redirect("/detail/{}/".format(pk))
         return JsonResponse({
                         "totalItemsInCart":num_items_cart,

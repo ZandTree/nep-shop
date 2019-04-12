@@ -71,8 +71,6 @@
         e.preventDefault();
         url= $(this).attr('href');
         $.get(url,function(response){
-            //console.log(response);
-            $("note").html(response.note);
             var flag = response.flag;
             if(flag){
                 $("#msg").html('This product is already in your cart');

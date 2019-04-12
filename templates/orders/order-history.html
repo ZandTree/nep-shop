@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container my-3">
     {% if object_list %}
-    <h3 class="text-center">Welcome by History Orders</h3>
+    <h3 class="text-center">Welcome by History Paid Orders</h3>
     <table class="table table-striped">
   <thead>
     <tr>
@@ -14,8 +14,8 @@
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
       <th scope="col">Order Total</th>
-      <th scope="col">Paid (date?)</th>
-      <th scope="col">Afronden</th>
+      <th scope="col">Paid(time)</th>
+      <th scope="col">Afgerond</th>
     </tr>
   </thead>
   <tbody>
@@ -28,15 +28,49 @@
       <td scope="row">{{order.date}}</td>
       <td scope="row">$  {{order.total}}</td>
       <td>
-          No need to delete
+          time to do
           </td>
       <td>
-          No need
+          Yes
       </td>
     </tr>
     {% endfor %}
-    {% else %}
-    <h2>No History Orders</h2>
+    </<tbody>
+</table>
+{% endif %}
+<hr>
+        {% if accepted_not_paid_yet_orders %}
+        <h3 class="text-center">Welcome by Not Paid YET Orders</h3>
+    <table class="table table-striped">
+   <thead>
+    <tr>
+      <th scope="row">User</th>
+      <th scope="col"># Id</th>
+      <th scope="col"># Generic Id</th>
+      <th scope="col">Status</th>
+      <th scope="col">Creation Date</th>
+      <th scope="col">Order Total</th>
+      <th scope="col">payIdeal_id</th>
+      <th scope="col">Afronden</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for order in accepted_not_paid_yet_orders %}
+      <tr class="tab_row-{{order.cart.id}}" >
+      <td scope="row">user-id: {{order.cart.user.id}}</td>
+      <td scope="row">{{order.id}}</td>
+      <td scope="row">{{order.order_id}}</td>
+      <td scope="row">{{order.status}}</td>
+      <td scope="row">{{order.date}}</td>
+      <td scope="row">$  {{order.total}}</td>
+      <td>
+          {{order.payIdeal_id}}
+          </td>
+      <td>
+          link to afronden
+      </td>
+    </tr>
+    {% endfor %}
     {% endif %}
 
   </tbody>

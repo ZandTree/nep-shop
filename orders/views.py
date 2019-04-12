@@ -30,12 +30,19 @@ class ListOrder(ListView):
 
     def get_queryset(self):
         return  Order.objects.filter(cart__user = self.request.user,accepted=False).order_by('-date')
+
 class OrderHistory(ListView):
     model = Order
     template_name = 'orders/order-history.html'
 
     def get_queryset(self):
-        return Order.objects.filter(cart__user = self.request.user,accepted=True).order_by('-date')
+        return Order.objects.filter(cart__user =            self.request.user,accepted=True,status='paid').order_by('-date')
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['accepted_not_paid_yet_orders'] = Order.objects.filter(cart__user =            self.request.user,accepted=True).exclude(status='paid').order_by('-date')
+        
+        return context
 
 class DeleteOrder(View):
     """user can remove pre-order from list of orders"""

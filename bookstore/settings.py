@@ -25,7 +25,7 @@ SECRET_KEY = 'az2%2a#1&%-gih^543upq-^)x2^#f#-pyq9eu)vq&l#-!^2%j='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','a649590d.ngrok.io']   #,'58a4d6bf.ngrok.io']
+ALLOWED_HOSTS = ['*', '63bd1f76.ngrok.io']
 # ALLOWED_HOSTS = ['*']
 
 
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'paypal.standard.ipn',
-    'wkhtmltopdf',
+    'django_cleanup.apps.CleanupConfig',
     # custom apps
     'prods',
     'search',
@@ -82,7 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 # my own function = in dir shop dir context_processors func list_categories
-                #'prods.context_processors.count_items_cart',
+                'prods.context_processors.list_categories',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -142,6 +142,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = None #"optional"
 ACCOUNT_USERNAME_REQUIRED = False
+LOGIN_URL= '/account/login'
 LOGIN_URL_REDIRECT = "/"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "My subject: "
 # auto loggin in after confirmation(otherwise will be redirected to log-in)
@@ -167,7 +168,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_mSDotOmmYb8ZFsGhuKMpQ6pP00RndNmKhE'
-SRTIPE_SECRET_KEY = 'sk_test_8OQC6fpPfsxSrSgYswKiV98s00NOQGxnQ5'
+SRTIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')
+IDEAL_API = os.environ.get('IDEALWORD')
+#print(IDEAL_API)
 
 #
 # try:

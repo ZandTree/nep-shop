@@ -18,7 +18,7 @@ class CartAdmin(admin.ModelAdmin):
     inlines = [CartItemInLine]
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title','slug']
+    list_display = ['title','slug','photo']
     class Meta:
         model = Product
 admin.site.register(Category, CustomMPTTModelAdmin)

@@ -1,0 +1,41 @@
+<!-- https://beta.developer.worldpay.com/docs/wpop-advanced/ideal -->
+<!-- https://www.spryngpayments.com/en/documentation/ideal/ -->
+<!-- Eng Checkout.com docs https://api-reference.checkout.com/#tag/Tokens/paths/~1tokens/post -->
+<!-- Eng https://docs.checkout.com/docs/ideal#section--span-class-step_hl-step-1-span-authorize-an-ideal-payment -->
+<!-- https://docs.acaptureservices.com/tutorials/server-to-server -->
+<!-- https://epayments.developer-ingenico.com/documentation/api/ -->
+<!-- https://docs.multisafepay.com/api/?_ga=2.20842936.1686307162.1554596083-550652749.1554387075#ideal -->
+<!-- https://api-reference.paypro.nl/#pause-subscription -->
+<!-- site with NL examples business https://nl.formdesk.com/screenshots/ -->
+
+<form action="/complete" id="payment-form" method="post">
+         <span id="payment-errors"></span>
+         <input id="apm-name" type="hidden" data-worldpay="apm-name" value="ideal">
+         <div class="form-row">
+            <label>Country Code</label>
+            <input type="text" id="country-code" name="countryCode"  data-worldpay="country-code" />
+         </div>
+         <div class="form-row">
+            <label>Shopper Bank Code</label>
+            ### Need dropdown selector here ####
+            <input type="text" id="shopper-bank-code" name="shopperBankCode" data-worldpay-apm="shopperBankCode" value="" />
+         </div>
+         <!— all other fields you want to collect, e.g. name and shipping address -->
+         <div>
+            <input type="image" src="iDEAL.gif" alt="Buy now with iDEAL" />
+         </div>
+      </form>
+      <script type="text/javascript">
+         var form = document.getElementById('payment-form');
+         Worldpay.tokenType = 'apm';
+         Worldpay.setClientKey("your-test-client-key");
+         Worldpay.useForm(form, function (status, response) {
+             if (response.error) {
+                 Worldpay.handleError(form, document.getElementById('payment-errors'), response.error);
+             } else {
+                 var token = response.token;
+                 Worldpay.formBuilder(form, 'input', 'hidden', 'token', token);
+                 form.submit();
+             }
+         });
+      </script>

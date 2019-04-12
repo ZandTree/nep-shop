@@ -8,6 +8,7 @@ class SearchList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'search/view_search.html'
+    paginate_by = 6
 
     def get_queryset(self,*args,**kwargs):
         word = self.request.GET.get('q')

@@ -4,16 +4,18 @@
 {% block title %}payment{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>Finally payment</h1>
+    <h1>Final payment</h1>
     <div class="row">
-        <div class="col col-md-6">
+        <div class="col col-md-4">
             <h4>Pay with PayPal</h4>
-                {{form.render}}
-            <p>end of book button</p>
+                {{form.render}}            
         </div>
-        <div class="col col-md-6">
+        <div class="col col-md-4">
             <h2><a href="{% url 'payments:start_stripe' %}">Pay with credit card</a></h2>
-
+        </div>
+        <div class="col col-md-4">
+            <h2><a href="{% url 'payments:start_ideal' %}">
+                <img src="https://www.ideal.nl/img/statisch/iDEAL-klein.gif" alt="iDEAL">Pay with iDeal(NL)</a></h2>
         </div>
     </div>
     <hr>
