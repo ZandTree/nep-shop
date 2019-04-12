@@ -45,7 +45,9 @@ class OrderHistory(ListView):
         return context
 
 class DeleteOrder(View):
-    """user can remove pre-order from list of orders"""
+    """user can remove pre-order from list of orders,
+       related cart gets deleted as well
+    """
     def post(self,request):
         pk = request.POST.get('pk')
         order = get_object_or_404(Order,id=pk,accepted=False)
@@ -53,17 +55,16 @@ class DeleteOrder(View):
         order.delete()
         cart.delete()
         return redirect('orders:list-orders')
-#
+
 class CreateOrder(View):
     """
-    Display existing order or
-    create a new one triggered by cart status => accepted False
+    Create a new order with flipping cart status =>
+    old one gets status accepted; a new one gets created and goes into session 
     Final update cart total(excl shipping)
     """
     # ? def get(in case user stops)
     def post(self,request):
         pk_cart = request.POST.get('pk','pk not found')
-
         cart = Cart.objects.get(id=pk_cart,accepted=False)
         # final update cart attr total
         cart.get_sum_items_price()

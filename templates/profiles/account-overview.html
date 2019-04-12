@@ -22,11 +22,11 @@
     </div>
     <div class="col-md-8">
         <h4>Account detail</h4>
-        <p>Info about account</p>
-        <p>Link to profile detail/edit</p>
-        <p>Delete account</p>
+        <p><a href="{% url 'profiles:profile-info' user.id %}">Change your profile detail</a></p>
+
         <!--  url 'profiles:profile-change' object.pk %} -->
         <p><a href="{% url 'account_change_password' %}">Change your password</a></p>
+        <p><a href="{% url 'profiles:account-delete' user.profile.id %}">Delete account</a></p>
     </div>
 </div>
 <hr>

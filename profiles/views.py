@@ -3,22 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from .forms import BillingProfileForm
 from .models import BillingProfile
-from django.urls import reverse
-# from .models import Guest
-# from .forms import GuestForm
-# from django.views import generic
-#
-# class GuestRegisterView(NextUrlMixin,RequestFormAttachMixin,generic.CreateView):
-#     form_class = GuestForm
-#     default_next = '/register/'
-#     template_name = 'profiles/guest_register.html'
-#
-#     def get_success_url(self):
-#         return self.get_next_url()
-#
-#     def form_invalid(self,form):
-#         return redirect('profiles:register-guest')
-#
+from django.urls import reverse,reverse_lazy
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
 class ProfileInfo(LoginRequiredMixin,generic.UpdateView,generic.DetailView):
     form_class = BillingProfileForm
     template_name = 'profiles/profile.html'
@@ -41,3 +29,13 @@ class AdjustProfile(generic.UpdateView):
 
 class AccountOverview(generic.TemplateView):
     template_name = 'profiles/account-overview.html'
+
+class DeleteAccount(generic.DeleteView):
+    model = BillingProfile
+    success_url = reverse_lazy('prods:home')
+    template_name = 'profiles/ask_before_delete_account.html'
+
+@receiver(post_delete, sender=BillingProfile)
+def auto_delete_user(sender, instance, **kwargs):
+    """ delete billingprofile.user together with related user"""
+    instance.user.delete()

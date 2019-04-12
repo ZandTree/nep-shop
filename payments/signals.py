@@ -6,6 +6,9 @@ from django.dispatch import receiver
 
 @receiver(valid_ipn_received)
 def payment_notification(sender,**kwargs):
+    """
+    payment notificatipon from django-paypal
+    """
     ipn_obj = sender
     if ipn_obj.payment_status == ST_PP_COMPLETED: #"Completed": #
         # payment successful
