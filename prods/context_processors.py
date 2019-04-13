@@ -6,20 +6,17 @@ def list_categories(request):
     """
     return {"cats":Category.objects.all()}
 
-
+# Note: let op cart gets created NOT at the stage of index view, but
+# when custemer clicks first to ADD prod into a Cart...
 def count_items_cart(request):
     """
     Amount items for menubar
     """
-    # print("now in context...looking for cart")
-    # print("user is ",request.user)
-    # print("preparing to call method .new_or_get...")
-    cart = Cart.objects.new_or_get(request,accepted=False)
-    # print("returned cart",cart)
-    # print('cart is:',cart)
-    # print('accepted is:',cart.accepted)
-    qty = cart.get_sum_items_amount()
-    return {"qty":qty}
-
-#  LET OP : THERE IS A PROBLEM WITH ANO USER AND THIS context_processors
-# solution: take .new_or_get(request)
+    cart_id = request.session.get('cart_id', 0)
+    if cart_id:
+        qs = Cart.objects.filter(id=cart_id,accepted =False)
+        cart_obj = qs.last()
+        qty = cart_obj.get_sum_items_amount()
+        return {"qty":qty}
+    else:
+        return {"qty":0}

@@ -15,7 +15,7 @@ class ProdList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'prods/index.html'
-    paginate_by = 6
+    paginate_by = 6    
 
 
 class CategoryProductsList(ListView):
