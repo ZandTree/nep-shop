@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
 
     #third party modules
     'mptt',
@@ -67,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'bookstore.urls'
@@ -178,3 +180,6 @@ IDEAL_API = os.environ.get('IDEALWORD')
 #     from .local_settings import *
 # except ImportError:
 #     from .prod_settings import *
+
+
+INTERNAL_IPS = ['127.0.0.1']  #,'::1','0.0.0.0']

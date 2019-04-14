@@ -45,7 +45,6 @@ def upload_img_file(instance,filepath):
         return os.path.join('image','prod_{0}','{1}').format(instance.id,new_file_name)
     else:
         return os.path.join('image','prods_load','{}').format(new_file_name)
-    #C:\Users\tanja\Desktop\newDjango\bookstore\media\image\prod_None\doekj.jpg
 
 class ProductManager(models.Manager):
     def search(self,word):
@@ -85,7 +84,6 @@ class Product(models.Model):
         if self.photo:
             return "/media/{}".format(self.photo)
         else:
-            # default img
             return "/static/images/carrot.jpg/"
     def save(self,*args,**kwargs):
         """ adjust image size"""
@@ -103,8 +101,6 @@ class CartManager(models.Manager):
         """ return cart object for either anonymnus user,or authenticated user"""
         cart_id = request.session.get('cart_id',None)
         qs = Cart.objects.filter(id=cart_id,accepted =False)
-        #print(qs.count())
-        # look for existing cart through session cart_id
         if qs.count() == 1:
             cart_obj = qs.last()
             if request.user.is_authenticated and cart_obj.user is None:
@@ -145,7 +141,6 @@ class Cart(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
     accepted = models.BooleanField(default=False)
-    # ??? why total
     total = models.DecimalField(decimal_places=2,
                         max_digits=10000000,
                         default = 0.00,
@@ -197,9 +192,3 @@ def product_presave_receiver(sender, instance,*args,**kwargs):
     if not instance.slug:
         instance.slug = make_unique_slug(instance)
 pre_save.connect(product_presave_receiver,sender=Product)
-#
-# @receiver(post_save,sender = User)
-# def create_user_cart(sender,instance,created,**kwargs):
-#     """If New User created, create Cart"""
-#     if created:
-#         cart = Cart.objects.create(user=instance)

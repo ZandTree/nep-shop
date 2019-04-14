@@ -15,7 +15,7 @@ class ProdList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'prods/index.html'
-    paginate_by = 6    
+    paginate_by = 6
 
 
 class CategoryProductsList(ListView):
@@ -71,7 +71,7 @@ class AddItemToCart(View):
                 qty = 1
                 )
             #messages.success(request, 'New item added to your cart.')
-        # below calc for menu bar
+        # below dynamic calc for menu bar
         num_items = cart.get_sum_items_amount()
         return JsonResponse({"flag":flag,"numItems":num_items}) #,"price":price})
         #return redirect("/detail/{}/".format(slug))

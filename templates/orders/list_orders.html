@@ -13,26 +13,28 @@
       <th scope="col"># Generic Id</th>
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
+      <th scope="col">View</th>
       <th scope="col">Order Total(exl shipping)</th>
       <th scope="col">Shipping cost</th>
       <th scope="col">Order Total(incl shipping)</th>
       <th scope="col">Delete</th>
-      <th scope="col">Afronden</th>
+      <th scope="col">Check It Out</th>
     </tr>
   </thead>
   <tbody>
       {% for order in orders %}
-      <tr class="tab_row-{{order.cart.id}}" >
-      <td scope="row">cart_user: {{order.cart.id}}</td>
+      <tr class="tab_row-{{order.cart_id}}" >
+      <td scope="row">cart_user: {{order.cart_id}}</td>
       <td scope="row">{{order.id}}</td>
       <td scope="row">{{order.order_id}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
+      <td scope="row"><a href="#">Details</a></td>
       <td scope="row">$ {{order.cart.total}} </td>
       <td scope="row">$ {{order.shipping_total}}</td>
       <td scope="row">$ {{order.total}}</td>
       <td>
-          <form class="remove-order" data-id={{order.cart.id}} action="{% url 'orders:delete-order' %}"  method="post">
+          <form class="remove-order" data-id={{order.cart_id}} action="{% url 'orders:delete-order' %}"  method="post">
               <!-- {% url 'orders:list-orders' -->
               {% csrf_token %}
             <input type="number" name="pk" value="{{order.id}}" hidden>

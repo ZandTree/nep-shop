@@ -14,24 +14,26 @@
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
       <th scope="col">Order Total</th>
-      <th scope="col">Paid(time)</th>
-      <th scope="col">Afgerond</th>
+      <th scope="col">Payment Time</th>
+      <th scope="col">Payment Method</th>
+      <th scope="col">Details</th>
     </tr>
   </thead>
   <tbody>
       {% for order in object_list %}
-      <tr class="tab_row-{{order.cart.id}}" >
-      <td scope="row">user-id: {{order.cart.user.id}}</td>
+      <tr class="tab_row-{{order.cart_id}}" >
+      <td scope="row">user-id: {{order.cart.user_id}}</td>
       <td scope="row">{{order.id}}</td>
       <td scope="row">{{order.order_id}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
+      <td scope="row"><a href="#">Details</a></td>
       <td scope="row">$  {{order.total}}</td>
-      <td>
-          time to do
-          </td>
-      <td>
-          Yes
+      <td scope="row">
+        paypal?
+      </td>
+      <td scope="row">
+          <button class="btn custom-success-btn"><a href="#">View Details</a></button>
       </td>
     </tr>
     {% endfor %}
@@ -57,7 +59,7 @@
   <tbody>
       {% for order in accepted_not_paid_yet_orders %}
       <tr class="tab_row-{{order.cart.id}}" >
-      <td scope="row">user-id: {{order.cart.user.id}}</td>
+      <td scope="row">user-id: {{order.cart.user_id}}</td>
       <td scope="row">{{order.id}}</td>
       <td scope="row">{{order.order_id}}</td>
       <td scope="row">{{order.status}}</td>
