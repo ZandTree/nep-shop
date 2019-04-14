@@ -40,12 +40,12 @@ export_to_csv.short_description = 'Export to CSV'
 # custom admin
 def order_detail(obj):
     return mark_safe('<a href="{}">View</a>'.format(reverse('orders:admin_order_detail', args=[obj.id])))
-#order_detail.allow_tags = True
+order_detail.allow_tags = True
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display =['id','order_id',order_detail,'status','cart','accepted','date','total']
+    list_display =['id','order_unid',order_detail,'status','cart','accepted','date','total']
     list_filter = ['status']
     actions = [export_to_csv]
-    #inlines = [] test if child model exist to include on the same page
+    inlines = [] #test if child model exist to include on the same page
 
 admin.site.register(Order,OrderAdmin)

@@ -22,13 +22,15 @@
                     <tr>
                         <th scope="col" class="text-center"># Order Id</th>
                         <th scope="col" class="text-center">Date Accepted</th>
+                        <th scope="col" class="text-center">Details</th>
                         <th scope="col" class="text-center">Total (incl shipping)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr >
-                        <td class="text-center">{{order.order_id}}</td>
+                        <td class="text-center">{{order.order_unid}}</td>
                         <td class="text-center">{{order.date}}</td>
+                        <td class="text-center"><a href="{% url 'orders:order-detail' order.id %}">View</a></td>
                         <td class="text-center">${{order.total}} incl(${{order.shipping_total}})</td>
                     </tr>
                 </tbody>

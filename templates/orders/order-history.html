@@ -24,16 +24,16 @@
       <tr class="tab_row-{{order.cart_id}}" >
       <td scope="row">user-id: {{order.cart.user_id}}</td>
       <td scope="row">{{order.id}}</td>
-      <td scope="row">{{order.order_id}}</td>
+      <td scope="row">{{order.order_unid}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
-      <td scope="row"><a href="#">Details</a></td>
+      <td scope="row"><a href="{% url 'orders:order-detail' order.order_unid %}">Details</a></td>
       <td scope="row">$  {{order.total}}</td>
       <td scope="row">
         paypal?
       </td>
       <td scope="row">
-          <button class="btn custom-success-btn"><a href="#">View Details</a></button>
+          <button class="btn custom-success-btn"><a href="{% url 'orders:order-detail' order.order_unid %}">View Details</a></button>
       </td>
     </tr>
     {% endfor %}
@@ -58,10 +58,10 @@
   </thead>
   <tbody>
       {% for order in accepted_not_paid_yet_orders %}
-      <tr class="tab_row-{{order.cart.id}}" >
+      <tr class="tab_row-{{order.cart_id}}" >
       <td scope="row">user-id: {{order.cart.user_id}}</td>
       <td scope="row">{{order.id}}</td>
-      <td scope="row">{{order.order_id}}</td>
+      <td scope="row">{{order.order_unid}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
       <td scope="row">$  {{order.total}}</td>

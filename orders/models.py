@@ -21,7 +21,7 @@ class OrderManager(models.query.QuerySet):
         return self.filter(status=status)
 
 class Order(models.Model):
-    order_id = models.CharField(max_length=120,blank=True) #AB3245
+    order_unid = models.CharField(max_length=120,blank=True) #AB3245
     status = models.CharField(max_length=120,default="created",choices=ORDER_STATUS_CHOICES)
     cart = models.ForeignKey(Cart,related_name='order',on_delete=models.CASCADE)
     accepted = models.BooleanField(default=False)
@@ -31,7 +31,7 @@ class Order(models.Model):
     payIdeal_id = models.CharField(max_length=30,blank=True,null=True)
 
     def __str__(self):
-        return "This is an order {}".format(self.order_id)
+        return "This is an order {}".format(self.order_unid)
 
     def update_total(self):
         """ generate price for each cart_item"""
@@ -44,7 +44,7 @@ class Order(models.Model):
 
 
 def order_id_presave_receiver(sender, instance,*args,**kwargs):
-    if not instance.order_id: # if already created => no need to change
-        instance.order_id = make_unique_id(instance)
+    if not instance.order_unid: # if already created => no need to change
+        instance.order_unid = make_unique_id(instance)
         # don't call here save(!)
 pre_save.connect(order_id_presave_receiver,sender=Order)

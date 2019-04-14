@@ -13,7 +13,7 @@
       <th scope="col"># Generic Id</th>
       <th scope="col">Status</th>
       <th scope="col">Creation Date</th>
-      <th scope="col">View</th>
+      <th scope="col">View Details</th>
       <th scope="col">Order Total(exl shipping)</th>
       <th scope="col">Shipping cost</th>
       <th scope="col">Order Total(incl shipping)</th>
@@ -26,10 +26,10 @@
       <tr class="tab_row-{{order.cart_id}}" >
       <td scope="row">cart_user: {{order.cart_id}}</td>
       <td scope="row">{{order.id}}</td>
-      <td scope="row">{{order.order_id}}</td>
+      <td scope="row">{{order.order_unid}}</td>
       <td scope="row">{{order.status}}</td>
       <td scope="row">{{order.date}}</td>
-      <td scope="row"><a href="#">Details</a></td>
+      <td scope="row"><a href="{% url 'orders:order-detail' order.order_unid %}">Details</a></td>
       <td scope="row">$ {{order.cart.total}} </td>
       <td scope="row">$ {{order.shipping_total}}</td>
       <td scope="row">$ {{order.total}}</td>

@@ -16,7 +16,7 @@ def make_unique_id(instance):
     """
     new_order_id = make_random_string().upper()
     Instance_Class = instance.__class__
-    qs =  Instance_Class.objects.filter(order_id=new_order_id).exists()
+    qs =  Instance_Class.objects.filter(order_unid=new_order_id).exists()
     if qs:
         return make_unique_id(instance)
     return new_order_id
