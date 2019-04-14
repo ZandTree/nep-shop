@@ -8,6 +8,19 @@ body {
     background-image: url(/static/images/old_map.png);
 
 }
+/* styles for account overview */
+.list-group-item.active.account{
+    background: #f0f0f2;
+    border-color: #d8cfcf;
+}
+/* font account info */
+.contact-info{
+    font-size: 20px;
+}
+.list-group-item{
+    background-color: beige;
+}
+/* end styles account overview */
 
 
 /* start dropdown categories */
