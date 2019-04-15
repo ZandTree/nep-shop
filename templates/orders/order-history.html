@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block title %}history orders{% endblock %}
 {% block content %}
-<div class="container my-3">
+<div class="container-fluid my-3">
     {% if object_list %}
     <h3 class="text-center">Welcome by History Paid Orders</h3>
     <table class="table table-striped">
@@ -12,7 +12,7 @@
       <th scope="col"># Id</th>
       <th scope="col"># Generic Id</th>
       <th scope="col">Status</th>
-      <th scope="col">Creation Date</th>
+      <th scope="col">Created</th>
       <th scope="col">Order Total</th>
       <th scope="col">Payment Time</th>
       <th scope="col">Payment Method</th>

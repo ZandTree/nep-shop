@@ -29,6 +29,11 @@ class AdjustProfile(generic.UpdateView):
 
 class AccountOverview(generic.TemplateView):
     template_name = 'profiles/account-overview.html'
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['email'] = 'contact@mail.com'
+        return context
+
 
 class DeleteAccount(generic.DeleteView):
     model = BillingProfile

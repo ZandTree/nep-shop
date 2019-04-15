@@ -15,7 +15,6 @@
     {% endif %}
 <div class="row">
     <div class="col col-md-2">
-
     </div>
     <div class="col col-md-4">
         <div class="list-group contact-info">
@@ -30,8 +29,9 @@
               <i class='fas fa-mobile-alt' style='font-size:24px;color:brown'></i>
                <strong><p>Mobiel nummer: 06-1234567</p></strong>
           </button>
+
           <button type="button" class="list-group-item list-group-item-action">
-               <strong><p>E-mail: owner@mail.com</p></strong>
+               <strong>Email: {{email|urlize}}</strong>
           </button>
           <button type="button" class="list-group-item list-group-item-action" >
               <span class="glyphicon">&#x2709;</span>
@@ -69,12 +69,7 @@
     </div>
 </div>
 <hr>
-<div class="row">
-    <div class="col-md-12">
-        <h4>Hystory</h4>
-        <p>Info about Hx orders</p>
-    </div>
-</div>
+
 </div> <!--end div container-->
 
 {% endblock %}

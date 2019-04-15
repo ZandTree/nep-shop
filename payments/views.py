@@ -31,7 +31,7 @@ class PayIdealStart(View):
 
     def post(self,request):
         try:
-            order_id = request.session.get('order_id')
+            order_unid = request.session.get('order_id')
             order = get_object_or_404(Order,id=order_id)
             mollie_client = Client()
             mollie_client.set_api_key(settings.IDEAL_API)
@@ -103,7 +103,7 @@ class PayPalPayment(View):
         paypal_dict = {
             'business':settings.PAYPAL_RECEIVER_EMAIL,
             'amount' :'%.2f'%order.total.quantize(Decimal('.01')),
-            'item_name':'Order {}'.format(order.order_id),
+            'item_name':'Order {}'.format(order.order_unid),
             'invoice':str(order.id),#id will be used later in signal
             'currency_code':'EUR', #USD',
             'notify_url':'http://{}{}'.format(host,reverse('paypal-ipn')),
@@ -130,9 +130,9 @@ class StripeCharge(View):
     def post(self,request):
         stripe.api_key = settings.SRTIPE_SECRET_KEY
         token = request.POST['stripeToken']
-        order_id = request.session.get('order_id')
+        order_unid = request.session.get('order_id')
         order = get_object_or_404(Order,id=order_id)
-        description =  "Payment for order #{}".format(order.order_id)
+        description =  "Payment for order #{}".format(order.order_unid)
         try:
             charge  = stripe.Charge.create(
                     #customer = customer.id,

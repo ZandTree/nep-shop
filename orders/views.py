@@ -96,12 +96,13 @@ class OrderDetail(LoginRequiredMixin,DetailView):
     model = Order
     def get_object(self):
         order_unid_ = self.kwargs.get('order_unid')
-        zoo = Order.objects.get(order_unid = order_unid_)
         return get_object_or_404(Order,order_unid=order_unid_)
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         order = self.get_object()
         cart = Cart.objects.get(order=order,accepted=True)
         cart_items = cart.cart_items.all()
+        context['amount'] = cart.get_sum_items_amount()
+        context['total_cart'] = cart.get_sum_items_price()
         context['cart_items'] = cart_items
         return context
