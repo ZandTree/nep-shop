@@ -57,6 +57,7 @@ class PayIdealStart(View):
             status = payment.status
             data = {'status': payment.status}
             order.payIdeal_id = payment.id
+            order.payment = 'ideal'
             order.save()
             request.session['ideal']= payment.id
             return redirect('payments:checkout-url')
@@ -99,6 +100,8 @@ class PayPalPayment(View):
     def get(self,request):
         order_id = request.session.get('order_id')
         order = get_object_or_404(Order,id=order_id)
+        order.payment = 'paypal'
+        order.save()
         host = request.get_host()
         paypal_dict = {
             'business':settings.PAYPAL_RECEIVER_EMAIL,
@@ -115,10 +118,10 @@ class PayPalPayment(View):
 
 @csrf_exempt
 def payment_done(request):
- return render(request, 'payments/PayPal/done.html')
+    return render(request, 'payments/PayPal/done.html')
 @csrf_exempt
 def payment_canceled(request):
- return render(request, 'payments/PayPal/canceled.html')
+    return render(request, 'payments/PayPal/canceled.html')
 
 
 class StripeCharge(View):
@@ -130,8 +133,10 @@ class StripeCharge(View):
     def post(self,request):
         stripe.api_key = settings.SRTIPE_SECRET_KEY
         token = request.POST['stripeToken']
-        order_unid = request.session.get('order_id')
+        order_id = request.session.get('order_id')
         order = get_object_or_404(Order,id=order_id)
+        order.payment = 'stripe'
+        order.save()
         description =  "Payment for order #{}".format(order.order_unid)
         try:
             charge  = stripe.Charge.create(

@@ -13,10 +13,16 @@ def count_items_cart(request):
     Amount items for menubar
     """
     cart_id = request.session.get('cart_id', 0)
+    #print(cart_id)
     if cart_id:
         qs = Cart.objects.filter(id=cart_id,accepted =False)
         cart_obj = qs.last()
-        qty = cart_obj.get_sum_items_amount()
-        return {"qty":qty}
+        try:
+            qty = cart_obj.get_sum_items_amount()
+            return {"qty":qty}
+        except:
+            print('Smth wrong with sessions')
+            qty = ""
+
     else:
         return {"qty":0}

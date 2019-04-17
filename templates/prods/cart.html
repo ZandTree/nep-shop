@@ -20,14 +20,16 @@
                       <th scope="col" class="text-center w-25">Price per 1 st</th>
                       <th scope="col" class="text-center">Remove</th>
                       <th scope="col" class="text-center" >Sub-Total</th>
-                      <th scope="col" class="text-center w-25">Total Items</th>
-                      <th scope="col" class="text-center w-25">Total Price</th>
+                      <th scope="col" class="text-right" colspan="2">Total Items</th>
+                      <th scope="col" class="text-center" ></th>
+                      <th scope="col" class="text-right" colspan="2">Total Price</th>
+                      <th scope="col" class="text-center" ></th>
                     </tr>
                   </thead>
                   <tbody>
                       {% for item in items %}
                     <tr class="on-move-{{item.product_id}}">
-                      <th scope="row" class="text-center"># {{cart.id}}</th>
+                      <th scope="row" class="text-center">{{cart.id}}</th>
                       <th scope="row" class="text-center">{{item.id}}</th>
                       <td class="text-center" > <a href="{% url 'prods:prod-view' item.product_id %}">{{item.product}}</a></td>
                       <td class="text-center" >
@@ -62,14 +64,20 @@
                       <td></td>
                       <td></td>
                       <td></td>
+                      <td></td>
 
                     </tr>
                     {% endfor %}
                     <tr>
                         <td></td><td></td><td></td><td></td><td></td>
-                        <td class="w-25"></td>
-                        <td class="text-center w-25" id="totalItemsInCart">Items In Total: {{qty}}</td>
-                        <td class="text-center w-25" id="totalPriceCart">Total Price (shipping excl) $ {{total_cart}}</td>
+                        <td class=""></td>
+                        <td></td>
+                        <!-- w-25 -->
+                        <td class="text-right"  colspan="2"  id="totalItemsInCart">Items In Total: {{qty}}</td>
+
+                        <!-- w-25 -->
+                        <td class="text-right" colspan="3" id="totalPriceCart">Total Price (shipping excl) $ {{total_cart}}</td>
+
                     </tr>
                     <tr id="show-proceed">
                     {% if user.is_authenticated%}
@@ -84,6 +92,8 @@
                                 class="btn btn-success">
                                 </form>
                             </td>
+                            <td></td>
+                            <td></td>
                     </tr>
                     {% else %}
                     <tr>
@@ -92,6 +102,7 @@
                         <td>To Make an Order You Need to LogIn or SignUp</td>
                         <td class="text-center"><a href="/accounts/signup/">SignUp</a></td>
                         <td class="text-center"><a href="/accounts/login/">Log In</a></td>
+
                     </tr>
                     <!-- <tr id="show-auth">
                     <td></td><td></td><td></td><td></td><td></td><td></td>

@@ -8,7 +8,10 @@ from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.contrib.auth.models import User
+# for search method
 from django.db.models import Q
+
+
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 
@@ -47,14 +50,15 @@ def upload_img_file(instance,filepath):
         return os.path.join('image','prods_load','{}').format(new_file_name)
 
 class ProductManager(models.Manager):
-    def search(self,word):
-        lookup = (Q(title__icontains=word)|
-                    Q(description__icontains=word)|
-                    Q(price__icontains=word)|
-                    Q(tags__title__icontains=word)
-                    # without related_name use just tag_title,tag_sluf (through the field)
-                    )
+    def search(self,words):
+        lookup = (Q(title__icontains=words)|
+                        Q(description__icontains=words)|
+                        Q(price__icontains=words)|
+                        Q(tags__title__icontains=words)
+                        # without related_name use just tag_title,tag_sluf (through the field)
+                        )
         return Product.objects.filter(lookup).distinct()
+
     def for_sale(self):
         return Product.objects.filter(sale=True)
 

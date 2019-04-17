@@ -1,5 +1,6 @@
 {% extends 'prods/base.html' %}
 {% load staticfiles %}
+{% load bootstrap4 %}
 {% block title %}Search Page{% endblock title %}
 
 {% block sidebar%}
@@ -28,7 +29,10 @@
 
         </div>
         <hr>
-        <div class="row"><!-- div pagination -->
+        <div class="row">
+            {% bootstrap_pagination page_obj %}
+        </div>
+        <!-- <div class="row"><!-- div pagination
             <div class="col-md-12">
                 <ul class="pagination">
                     <li class="disabled"><a href="#">&laquo;</a></li>
@@ -39,7 +43,7 @@
                     <li><a href="#">&raquo;</a></li>
                 </ul>
             </div>
-        </div><!-- end div pagination -->
+        </div>end div pagination -->
     </div>
 </div>
 

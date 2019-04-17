@@ -21,6 +21,11 @@ body {
     background-color: beige;
 }
 /* end styles account overview */
+.navbar-light .navbar-nav .nav-link{
+    color:black;
+}
+
+}
 
 
 /* start dropdown categories */
@@ -87,6 +92,7 @@ body {
 }
 
 /* end dropdown categories */
+
 .zoo{
     height: 50px;
 }
@@ -107,11 +113,14 @@ body {
     color:white;
 }
 a {
-color: #b5401b;
+/* color: #b5401b; */
+color:black;
 font-size: 1rem;
 -webkit-transition: 0.5s;
 -o-transition: 0.5s;
-transition: 0.5s; }
+transition: 0.5s;
+}
+
 a:hover, a:active, a:focus {
 color: black;
 outline: none;
@@ -418,6 +427,7 @@ h1, h2, h3, h4, h5, h6, figure {
 .breadcrumbs .slider-text > .slider-text-inner .bread span:first-child {
     margin-left: 0;
 }
+
 /* pagination  bootstrap */
 .page-link {
   position: relative;
