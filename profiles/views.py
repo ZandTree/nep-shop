@@ -6,18 +6,27 @@ from .models import BillingProfile
 from django.urls import reverse,reverse_lazy
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.contrib import messages
 
-class ProfileInfo(LoginRequiredMixin,generic.UpdateView,generic.DetailView):
+class ProfileInfo(LoginRequiredMixin,generic.UpdateView):
     form_class = BillingProfileForm
     template_name = 'profiles/profile.html'
+    success_url = '/'
     def get_object(self):
         pk = self.kwargs.get('pk')
         profile_id = BillingProfile.objects.get(user_id=pk)
         return profile_id
+    def form_valid(self,form):
+        # self.request.phone = form.cleaned_data['phone']
+        # self.request.user.last_name = form.cleaned_data['last_name']
+        # self.request.user.save()
+        messages.success(self.request,'Profile has been updated!')
+        return super().form_valid(form)
 
 
-class AdjustProfile(generic.UpdateView):
-    """"""
+
+class AdjustProfile(LoginRequiredMixin,generic.UpdateView):
+    """edit profile form during checkout with reverse to payment page"""
     form_class = BillingProfileForm
     template_name = 'profiles/adjust_profile.html'
     def get_object(self):
@@ -28,6 +37,9 @@ class AdjustProfile(generic.UpdateView):
         return reverse('payments:pay')
 
 class AccountOverview(generic.TemplateView):
+    """
+    render customer profile details and support data
+    """
     template_name = 'profiles/account-overview.html'
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
